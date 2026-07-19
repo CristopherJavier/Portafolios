@@ -38,8 +38,7 @@ body {
 }
 
 .layered-scroll {
-  --target-progress: 0;
-  --rendered-progress: 0;
+  --scroll-progress: 0;
   position: relative;
   height: 500vh;
   height: 500svh;

@@ -6,7 +6,6 @@ import { Reveal } from './Reveal';
 import { Scene } from './Scene';
 import { SceneHeader } from './SceneHeader';
 import { ScrollIndicator } from './ScrollIndicator';
-import { SocialLinks } from './SocialLinks';
 
 export function PortfolioExperience({ data }: { data: PortfolioData }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -27,14 +26,13 @@ export function PortfolioExperience({ data }: { data: PortfolioData }) {
   return <div className="portfolio-experience" style={{ '--active-scene': activeIndex } as CSSProperties}>
     <a className="skip-link" href="#main-content">Saltar al contenido</a>
     <MinimalNavigation monogram={data.identity.monogram} name={data.identity.name} scenes={data.scenes} activeIndex={activeIndex} />
-    <main id="main-content">{data.scenes.map((scene, index) => <Scene key={scene.id} scene={scene} active={index === activeIndex}>{scene.id === 'presentacion' ? <PresentationScene data={data} /> : scene.id === 'punto-de-partida' ? <OriginScene scene={scene} data={data} /> : scene.id === 'forma-de-aprender' ? <LearningScene scene={scene} data={data} /> : scene.id === 'tecnologias' ? <TechnologyScene scene={scene} data={data} /> : scene.id === 'proyecto-principal' ? <FeaturedProjectScene scene={scene} data={data} /> : scene.id === 'otros-proyectos' ? <SecondaryProjectsScene scene={scene} data={data} /> : scene.id === 'progreso' ? <GithubProgressScene scene={scene} data={data} /> : scene.id === 'formacion' ? <EducationScene scene={scene} data={data} /> : scene.id === 'proximo-nivel' ? <NextLevelScene scene={scene} data={data} /> : <><SceneHeader scene={scene} /><SceneContent scene={scene} data={data} /></>}<ScrollIndicator nextScene={data.scenes[index + 1]} /></Scene>)}</main>
+    <main id="main-content">{data.scenes.map((scene, index) => <Scene key={scene.id} scene={scene} active={index === activeIndex}>{scene.id === 'presentacion' ? <PresentationScene data={data} /> : scene.id === 'punto-de-partida' ? <OriginScene scene={scene} data={data} /> : scene.id === 'forma-de-aprender' ? <LearningScene scene={scene} data={data} /> : scene.id === 'tecnologias' ? <TechnologyScene scene={scene} data={data} /> : scene.id === 'proyecto-principal' ? <FeaturedProjectScene scene={scene} data={data} /> : scene.id === 'otros-proyectos' ? <SecondaryProjectsScene scene={scene} data={data} /> : scene.id === 'progreso' ? <GithubProgressScene scene={scene} data={data} /> : scene.id === 'formacion' ? <EducationScene scene={scene} data={data} /> : scene.id === 'proximo-nivel' ? <NextLevelScene scene={scene} data={data} /> : scene.id === 'contacto' ? <ContactScene scene={scene} data={data} /> : <><SceneHeader scene={scene} /><SceneContent scene={scene} data={data} /></>}<ScrollIndicator nextScene={data.scenes[index + 1]} /></Scene>)}</main>
   </div>;
 }
 
 function SceneContent({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
   const featuredProject = data.projects.find((project) => project.featured) ?? data.projects[0];
   if (scene.id === 'presentacion') return <div className="scene-intro"><Reveal><p className="scene-intro__role">{data.identity.role}</p></Reveal><Reveal delay="reveal--late"><p className="scene-intro__description">{data.identity.description}</p></Reveal><div className="portrait-frame" role="img" aria-label={data.identity.photo.alt}>{data.identity.photo.src ? <img src={data.identity.photo.src} alt={data.identity.photo.alt} fetchPriority="high" /> : <span>Fotografía principal pendiente</span>}</div></div>;
-  if (scene.id === 'contacto') return <div className="contact-foundation"><Reveal><p>Disponible para conversar sobre colaboración, aprendizaje y oportunidades junior.</p></Reveal><SocialLinks {...data.identity.contact} /></div>;
   return <p className="scene-placeholder">El contenido de este capítulo se desarrollará con información personal verificada.</p>;
 }
 
@@ -212,4 +210,31 @@ function EducationScene({ scene, data }: { scene: PortfolioScene; data: Portfoli
 
 function NextLevelScene({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
   return <div className="next-level"><SceneHeader scene={scene} /><Reveal className="next-level__path"><ol>{data.goals.map((goal, index) => <li key={goal}><span>{String(index + 1).padStart(2, '0')}</span><p>{goal}</p></li>)}</ol><p className="next-level__closing">El siguiente paso no es aparentar haber llegado: es seguir haciendo el trabajo que permite avanzar.</p></Reveal></div>;
+}
+
+function ContactScene({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
+  const [copied, setCopied] = useState(false);
+  const { identity } = data;
+  const hasEmail = Boolean(identity.contact.email);
+  const isExternalUrl = (value: string) => /^https?:\/\//i.test(value);
+
+  const copyEmail = async () => {
+    if (!hasEmail || !navigator.clipboard) return;
+    try {
+      await navigator.clipboard.writeText(identity.contact.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    } catch {
+      setCopied(false);
+    }
+  };
+
+  const channels = [
+    { label: 'Correo', value: identity.contact.email, href: hasEmail ? `mailto:${identity.contact.email}` : '' },
+    { label: 'GitHub', value: identity.contact.github, href: identity.contact.github },
+    { label: 'LinkedIn', value: identity.contact.linkedin, href: identity.contact.linkedin },
+    { label: 'Currículum', value: identity.contact.curriculum, href: identity.contact.curriculum },
+  ];
+
+  return <div className="contact-closing"><SceneHeader scene={scene} /><div className="contact-closing__layout"><Reveal className="contact-closing__statement"><p>Estoy construyendo mi primera etapa en desarrollo. Me interesa seguir aprendiendo junto a otros desarrolladores, aportar en proyectos y conversar sobre oportunidades junior.</p><dl><div><dt>Ubicación</dt><dd>{identity.location}</dd></div><div><dt>Disponibilidad</dt><dd>{identity.availability || 'DISPONIBILIDAD — PENDIENTE DE CONFIGURAR'}</dd></div></dl></Reveal><div className="contact-closing__channels" aria-label="Métodos de contacto">{channels.map((channel) => <div key={channel.label} className="contact-channel"><span>{channel.label}</span>{channel.href && (channel.label === 'Correo' || isExternalUrl(channel.href)) ? <a href={channel.href} target={channel.label === 'Correo' ? undefined : '_blank'} rel={channel.label === 'Correo' ? undefined : 'noreferrer'}>{channel.value}<b aria-hidden="true"> ↗</b></a> : <p>{channel.label.toUpperCase()} — PENDIENTE DE CONFIGURAR</p>}</div>)}<button type="button" className="copy-email-button" onClick={copyEmail} disabled={!hasEmail || !navigator.clipboard}>{copied ? 'Correo copiado' : hasEmail ? 'Copiar correo' : 'Correo pendiente de configurar'}</button><span className="contact-closing__copy-status" aria-live="polite">{copied ? 'Correo copiado al portapapeles.' : ''}</span></div></div><div className="contact-closing__return"><span className="contact-closing__monogram" aria-hidden="true">{identity.monogram}</span><p>La historia sigue abierta.</p><a href="#scene-presentacion">Volver al inicio <span aria-hidden="true">↑</span></a></div></div>;
 }

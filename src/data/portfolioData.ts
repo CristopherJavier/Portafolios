@@ -27,7 +27,7 @@ export interface PortfolioProject {
 
 export interface PortfolioData {
   identity: {
-    name: string; monogram: string; role: string; description: string; location: string;
+    name: string; monogram: string; role: string; description: string; location: string; availability: string;
     photo: { src: string; alt: string };
     contact: { email: string; github: string; linkedin: string; curriculum: string };
   };
@@ -70,7 +70,8 @@ export const portfolioData: PortfolioData = {
     monogram: 'CJ',
     role: 'Desarrollador en formación / desarrollador junior',
     description: 'Estoy comenzando en programación, construyendo proyectos propios y desarrollando progresivamente mis conocimientos.',
-    location: '',
+    location: 'República Dominicana',
+    availability: '',
     photo: { src: '', alt: 'Fotografía principal de Cristopher Javier' },
     contact: { email: '', github: '', linkedin: '', curriculum: '' },
   },

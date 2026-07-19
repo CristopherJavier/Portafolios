@@ -15,12 +15,14 @@ export interface PortfolioProject {
   name: string;
   featured?: boolean;
   status: string;
-  summary: string;
+  description: string;
   problem: string;
   audience: string;
+  features: string[];
   technologies: string[];
-  image?: { src: string; alt: string };
-  links: { project?: string; repository?: string };
+  captures: Array<{ src: string; alt: string; label: string }>;
+  learnings: string[];
+  links: { demo?: string; repository?: string };
 }
 
 export interface PortfolioData {
@@ -76,7 +78,7 @@ export const portfolioData: PortfolioData = {
     { id: 'punto-de-partida', number: '02', label: 'Punto de partida', title: 'El punto de partida.', summary: 'Un capítulo para documentar cómo comenzó este recorrido.', tone: 'paper', height: 'regular' },
     { id: 'forma-de-aprender', number: '03', label: 'Método', title: 'Aprender, probar y volver a construir.', summary: 'Mi forma de avanzar a través de curiosidad, práctica y proyectos propios.', tone: 'mist', height: 'regular' },
     { id: 'tecnologias', number: '04', label: 'Sistema actual', title: 'Tecnología puesta en contexto.', summary: 'Herramientas organizadas por práctica actual, flujo de trabajo y exploración.', tone: 'ink', height: 'feature' },
-    { id: 'proyecto-principal', number: '05', label: 'Caso principal', title: 'El trabajo que más espacio merece.', summary: 'Un caso de estudio real mostrará problema, decisiones y aprendizaje.', tone: 'paper', height: 'feature' },
+    { id: 'proyecto-principal', number: '05', label: 'Caso principal', title: 'FloristManager', summary: 'Aplicación web creada para apoyar la gestión de una pequeña floristería. Permite trabajar con inventario de flores, movimientos, catálogo y cotizaciones.', tone: 'paper', height: 'feature' },
     { id: 'otros-proyectos', number: '06', label: 'Más capítulos', title: 'Cada proyecto añade una capa.', summary: 'Trabajos secundarios presentados como capítulos, no como una cuadrícula de tarjetas.', tone: 'mist', height: 'regular' },
     { id: 'progreso', number: '07', label: 'Constancia', title: 'El progreso también es volver mañana.', summary: 'La actividad es una señal de hábito y aprendizaje, no una promesa de seniority.', tone: 'ink', height: 'compact' },
     { id: 'formacion', number: '08', label: 'Base', title: 'Formación que acompaña la práctica.', summary: 'Estudios y certificaciones con jerarquía clara y verificable.', tone: 'paper', height: 'regular' },
@@ -117,7 +119,25 @@ export const portfolioData: PortfolioData = {
     { name: 'GitHub', category: 'workflow', stages: ['versioning', 'publishing'] },
     { name: 'Firebase', category: 'exploring', stages: ['data', 'publishing'] },
   ],
-  projects: [],
+  projects: [
+    {
+      id: 'florist-manager',
+      name: 'FloristManager',
+      featured: true,
+      description: 'Aplicación web creada para apoyar la gestión de una pequeña floristería. Permite trabajar con inventario de flores, movimientos, catálogo y cotizaciones.',
+      problem: '',
+      audience: '',
+      features: [],
+      technologies: [],
+      captures: [],
+      status: '',
+      learnings: [],
+      links: { demo: '', repository: '' },
+    },
+    { id: 'secondary-01', name: '', description: '', problem: '', audience: '', features: [], technologies: [], captures: [], status: '', learnings: [], links: { demo: '', repository: '' } },
+    { id: 'secondary-02', name: '', description: '', problem: '', audience: '', features: [], technologies: [], captures: [], status: '', learnings: [], links: { demo: '', repository: '' } },
+    { id: 'secondary-03', name: '', description: '', problem: '', audience: '', features: [], technologies: [], captures: [], status: '', learnings: [], links: { demo: '', repository: '' } },
+  ],
   progress: { contributions: 105, message: 'Una cifra editable que representa constancia de aprendizaje y construcción, no una hazaña extraordinaria.' },
   education: { studies: [], certifications: [{ name: 'BAM Certified', level: 'supplementary' }, { name: 'KRII', level: 'supplementary' }] },
   goals: ['Fortalecer fundamentos de desarrollo de software.', 'Mejorar progresivamente en desarrollo web.', 'Construir proyectos más completos.', 'Colaborar y aprender dentro de un equipo.', 'Conseguir una primera oportunidad profesional.'],

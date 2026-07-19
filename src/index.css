@@ -121,6 +121,40 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .technology-category > span { color: var(--color-accent); font-size: .67rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .technology-category p { margin: .55rem 0 0; color: var(--scene-muted); font-size: .88rem; line-height: 1.6; }
 
+/* Scene 05 — FloristManager follows a single reading sequence beside an evidence surface. */
+.featured-project { display: grid; grid-template-columns: minmax(16rem, .85fr) minmax(17rem, 1.15fr); gap: clamp(2rem, 7vw, 8rem); align-items: start; margin-top: clamp(2.5rem, 7vh, 6rem); }
+.featured-project__lead { grid-column: 1 / -1; }
+.featured-project__meta { margin: 1.4rem 0 0; color: var(--color-accent); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.featured-project__media { position: sticky; top: 12vh; grid-column: 1; align-self: start; }
+.featured-project__media .project-media { box-shadow: var(--shadow-media); }
+.featured-project__capture-label { display: block; margin-top: .8rem; color: var(--color-muted); font-size: .68rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+.featured-project__steps { grid-column: 2; }
+.featured-project__steps article { display: grid; align-content: center; min-height: 48svh; padding: 2rem 0; border-top: 1px solid var(--color-line); }
+.featured-project__steps article:last-child { border-bottom: 1px solid var(--color-line); }
+.featured-project__steps article > span { color: var(--color-accent); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.featured-project__steps h3 { margin: .8rem 0; color: var(--color-text); font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 4rem); font-weight: 400; letter-spacing: -.05em; line-height: .94; }
+.featured-project__steps p { max-width: 37ch; margin: 0; color: var(--color-muted); font-size: 1rem; line-height: 1.7; }
+.featured-project__steps .featured-project__audience, .featured-project__steps .featured-project__technologies { margin-top: 1rem; color: var(--color-text); font-size: .82rem; }
+.featured-project__links { display: flex; grid-column: 1 / -1; flex-wrap: wrap; gap: .8rem 1.25rem; align-items: center; padding-top: 1.5rem; border-top: 1px solid var(--color-line); color: var(--color-muted); font-size: .78rem; }
+.featured-project__links > span:first-child { color: var(--color-text); font-weight: 700; }
+.featured-project__links a { color: var(--color-text); font-weight: 700; text-underline-offset: .3em; }
+
+/* Scene 06 — compact alternating chapters; empty rows remain explicit authoring slots. */
+.secondary-projects { width: min(100%, var(--width-wide)); margin-inline: auto; }
+.secondary-projects__list { display: grid; gap: clamp(3rem, 8vh, 7rem); margin-top: clamp(2.5rem, 7vh, 6rem); }
+.secondary-project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, .8fr); gap: clamp(1.5rem, 5vw, 5rem); align-items: center; padding-top: clamp(1.5rem, 3vw, 3rem); border-top: 1px solid var(--color-line); }
+.secondary-project:nth-child(even) .secondary-project__media { order: 2; }
+.secondary-project__media .project-media { box-shadow: none; }
+.secondary-project__content > span { color: var(--color-accent); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.secondary-project__content h3 { margin: .75rem 0; font-family: var(--font-display); font-size: clamp(2rem, 3.2vw, 3.6rem); font-weight: 400; letter-spacing: -.05em; line-height: .94; }
+.secondary-project__content > p { max-width: 38ch; margin: 0; color: var(--color-muted); line-height: 1.65; }
+.secondary-project dl { display: grid; gap: .65rem; margin: 1.5rem 0 0; }
+.secondary-project dl > div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-top: .65rem; border-top: 1px solid var(--color-line); }
+.secondary-project dt { color: var(--color-accent); font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.secondary-project dd { margin: 0; color: var(--color-muted); font-size: .78rem; line-height: 1.55; }
+.secondary-project__links { display: flex; gap: 1.25rem; margin-top: 1.25rem; color: var(--color-muted); font-size: .76rem; }
+.secondary-project__links a { color: var(--color-text); font-weight: 700; text-underline-offset: .3em; }
+
 @media (max-width: 980px) {
   .presentation-cover__media { grid-column: 7 / -1; }
   .presentation-cover__details { grid-column: 1 / 8; }
@@ -130,6 +164,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .learning-method { grid-template-columns: minmax(14rem, .8fr) minmax(16rem, 1.2fr); gap: 3rem; }
   .technology-system__layout { grid-template-columns: 1fr; }
   .technology-system__categories { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; }
+  .featured-project { grid-template-columns: minmax(14rem, .8fr) minmax(16rem, 1.2fr); gap: 3rem; }
+  .secondary-project { gap: 2.5rem; }
 }
 
 .minimal-navigation { position: fixed; left: clamp(.75rem, 2vw, 2rem); top: 50%; z-index: var(--z-navigation); display: grid; gap: 1rem; align-items: center; transform: translateY(-50%); color: var(--color-white); }
@@ -216,6 +252,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .technology-system__stages { grid-template-columns: 1fr; }
   .technology-stage { min-height: auto; }
   .technology-system__categories { grid-template-columns: 1fr; }
+  .featured-project { grid-template-columns: 1fr; gap: 1.5rem; }
+  .featured-project__media, .featured-project__steps { grid-column: auto; }
+  .featured-project__media { position: static; }
+  .featured-project__steps article { min-height: auto; padding: 2rem 0; }
+  .secondary-project { grid-template-columns: 1fr; gap: 1.25rem; }
+  .secondary-project:nth-child(even) .secondary-project__media { order: 0; }
+  .secondary-project dl > div { grid-template-columns: 6rem 1fr; }
   .scene-intro, .project-foundation { grid-template-columns: 1fr; }
   .portrait-frame { min-height: 75vw; }
   .technology-layer { grid-template-columns: 1fr; gap: .5rem; }

@@ -27,15 +27,13 @@ export function PortfolioExperience({ data }: { data: PortfolioData }) {
   return <div className="portfolio-experience" style={{ '--active-scene': activeIndex } as CSSProperties}>
     <a className="skip-link" href="#main-content">Saltar al contenido</a>
     <MinimalNavigation monogram={data.identity.monogram} name={data.identity.name} scenes={data.scenes} activeIndex={activeIndex} />
-    <main id="main-content">{data.scenes.map((scene, index) => <Scene key={scene.id} scene={scene} active={index === activeIndex}>{scene.id === 'presentacion' ? <PresentationScene data={data} /> : scene.id === 'punto-de-partida' ? <OriginScene scene={scene} data={data} /> : scene.id === 'forma-de-aprender' ? <LearningScene scene={scene} data={data} /> : scene.id === 'tecnologias' ? <TechnologyScene scene={scene} data={data} /> : <><SceneHeader scene={scene} /><SceneContent scene={scene} data={data} /></>}<ScrollIndicator nextScene={data.scenes[index + 1]} /></Scene>)}</main>
+    <main id="main-content">{data.scenes.map((scene, index) => <Scene key={scene.id} scene={scene} active={index === activeIndex}>{scene.id === 'presentacion' ? <PresentationScene data={data} /> : scene.id === 'punto-de-partida' ? <OriginScene scene={scene} data={data} /> : scene.id === 'forma-de-aprender' ? <LearningScene scene={scene} data={data} /> : scene.id === 'tecnologias' ? <TechnologyScene scene={scene} data={data} /> : scene.id === 'proyecto-principal' ? <FeaturedProjectScene scene={scene} data={data} /> : scene.id === 'otros-proyectos' ? <SecondaryProjectsScene scene={scene} data={data} /> : <><SceneHeader scene={scene} /><SceneContent scene={scene} data={data} /></>}<ScrollIndicator nextScene={data.scenes[index + 1]} /></Scene>)}</main>
   </div>;
 }
 
 function SceneContent({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
   const featuredProject = data.projects.find((project) => project.featured) ?? data.projects[0];
   if (scene.id === 'presentacion') return <div className="scene-intro"><Reveal><p className="scene-intro__role">{data.identity.role}</p></Reveal><Reveal delay="reveal--late"><p className="scene-intro__description">{data.identity.description}</p></Reveal><div className="portrait-frame" role="img" aria-label={data.identity.photo.alt}>{data.identity.photo.src ? <img src={data.identity.photo.src} alt={data.identity.photo.alt} fetchPriority="high" /> : <span>Fotografía principal pendiente</span>}</div></div>;
-  if (scene.id === 'proyecto-principal') return <div className="project-foundation"><ProjectMedia src={featuredProject?.image?.src} alt={featuredProject?.image?.alt ?? 'Captura del proyecto principal'} priority label="Captura del proyecto principal pendiente" /><Reveal className="project-foundation__copy"><p className="scene-detail-label">Caso de estudio</p><h3>{featuredProject?.name ?? 'Proyecto principal pendiente de confirmar'}</h3><p>{featuredProject?.summary ?? 'La estructura ya está preparada para documentar problema, audiencia, decisiones, tecnologías y aprendizaje con información real.'}</p></Reveal></div>;
-  if (scene.id === 'otros-proyectos') { const projects = data.projects.filter((project) => !project.featured); return <div className="chapter-list">{projects.length ? projects.map((project, index) => <Reveal key={project.id} className="chapter-list__item"><span>{String(index + 1).padStart(2, '0')}</span><h3>{project.name}</h3><p>{project.status}</p></Reveal>) : <p className="scene-placeholder">Los proyectos secundarios aparecerán aquí como capítulos visuales cuando se incorporen datos verificados.</p>}</div>; }
   if (scene.id === 'progreso') return <div className="progress-foundation"><Reveal><span className="progress-foundation__number">≈{data.progress.contributions}</span></Reveal><Reveal delay="reveal--late"><p>{data.progress.message}</p></Reveal><div className="progress-foundation__grid" aria-label="Representación visual de constancia" aria-hidden="true">{Array.from({ length: 42 }, (_, index) => <span key={index} />)}</div></div>;
   if (scene.id === 'formacion') return <div className="education-foundation">{data.education.studies.length ? data.education.studies.map((study) => <Reveal key={study}><p>{study}</p></Reveal>) : <p className="scene-placeholder">Agrega estudios y certificaciones verificadas desde la fuente de datos central.</p>}{data.education.certifications.map((certification) => <Reveal key={certification.name} className={`certification certification--${certification.level}`}><span>{certification.name}</span></Reveal>)}</div>;
   if (scene.id === 'proximo-nivel') return <ol className="goal-list">{data.goals.map((goal, index) => <li key={goal}><span>{String(index + 1).padStart(2, '0')}</span>{goal}</li>)}</ol>;
@@ -157,4 +155,45 @@ function TechnologyScene({ scene, data }: { scene: PortfolioScene; data: Portfol
       </div>
     </div>
   </div>;
+}
+
+function FeaturedProjectScene({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
+  const project = data.projects.find((item) => item.featured);
+  const [activeStep, setActiveStep] = useState(0);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const steps = project ? [
+    { id: 'problem', label: 'Problema', content: project.problem || 'PROBLEMA — PENDIENTE DE CONFIGURAR' },
+    { id: 'solution', label: 'Solución', content: project.description || 'DESCRIPCIÓN COMPLETA — PENDIENTE DE CONFIGURAR' },
+    { id: 'functions', label: 'Funciones', content: project.features.length ? project.features.join(' · ') : 'FUNCIONES — PENDIENTE DE CONFIGURAR' },
+    { id: 'learning', label: 'Aprendizajes', content: project.learnings.length ? project.learnings.join(' · ') : 'APRENDIZAJES — PENDIENTE DE CONFIGURAR' },
+  ] : [];
+  const capture = project?.captures[activeStep] ?? project?.captures[0];
+
+  useEffect(() => {
+    const root = sceneRef.current;
+    if (!root) return;
+    const stepElements = Array.from(root.querySelectorAll('[data-project-step]')) as HTMLElement[];
+    const observer = new IntersectionObserver((entries) => {
+      const visibleStep = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visibleStep) return;
+      const index = Number((visibleStep.target as HTMLElement).dataset.projectStep);
+      if (!Number.isNaN(index)) setActiveStep((current) => current === index ? current : index);
+    }, { rootMargin: '-38% 0px -45% 0px', threshold: [0, .45, 1] });
+    stepElements.forEach((step) => observer.observe(step));
+    return () => observer.disconnect();
+  }, []);
+
+  if (!project) return <><SceneHeader scene={scene} /><p className="scene-placeholder">Proyecto principal pendiente de configurar.</p></>;
+
+  return <div ref={sceneRef} className="featured-project">
+    <div className="featured-project__lead"><SceneHeader scene={scene} /><p className="featured-project__meta">Capítulo 05 / {project.status || 'ESTADO — PENDIENTE DE CONFIGURAR'}</p></div>
+    <div className="featured-project__media"><ProjectMedia src={capture?.src} alt={capture?.alt ?? 'Captura de FloristManager'} priority={activeStep === 0} label={capture?.label || 'CAPTURAS DE FLORISTMANAGER — PENDIENTES DE CONFIGURAR'} /><span className="featured-project__capture-label">{capture?.label || 'Captura pendiente'} · {String(Math.min(activeStep + 1, steps.length)).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}</span></div>
+    <div className="featured-project__steps">{steps.map((step, index) => <article key={step.id} data-project-step={index} data-active={index === activeStep}><span>{String(index + 1).padStart(2, '0')} / {step.label}</span><h3>{step.label}</h3><p>{step.content}</p>{step.id === 'solution' && <p className="featured-project__audience">Para: {project.audience || 'USUARIO OBJETIVO — PENDIENTE DE CONFIGURAR'}</p>}{step.id === 'functions' && <p className="featured-project__technologies">Tecnologías: {project.technologies.length ? project.technologies.join(' · ') : 'TECNOLOGÍAS — PENDIENTE DE CONFIGURAR'}</p>}</article>)}</div>
+    <div className="featured-project__links"><span>Explorar proyecto</span>{project.links.demo ? <a href={project.links.demo} target="_blank" rel="noreferrer">Ver demo ↗</a> : <span>Demo pendiente</span>}{project.links.repository ? <a href={project.links.repository} target="_blank" rel="noreferrer">Repositorio ↗</a> : <span>Repositorio pendiente</span>}</div>
+  </div>;
+}
+
+function SecondaryProjectsScene({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
+  const projects = data.projects.filter((project) => !project.featured);
+  return <div className="secondary-projects"><SceneHeader scene={scene} /><div className="secondary-projects__list">{projects.map((project, index) => <article key={project.id} className="secondary-project"><div className="secondary-project__media"><ProjectMedia src={project.captures[0]?.src} alt={project.captures[0]?.alt ?? 'Captura de proyecto secundario'} label="CAPTURA DEL PROYECTO — PENDIENTE DE CONFIGURAR" /></div><div className="secondary-project__content"><span>{String(index + 1).padStart(2, '0')} / Capítulo</span><h3>{project.name || 'NOMBRE DEL PROYECTO — PENDIENTE'}</h3><p>{project.description || 'DESCRIPCIÓN — PENDIENTE DE CONFIGURAR'}</p><dl><div><dt>Problema</dt><dd>{project.problem || 'PENDIENTE'}</dd></div><div><dt>Tecnologías</dt><dd>{project.technologies.length ? project.technologies.join(' · ') : 'PENDIENTE'}</dd></div><div><dt>Estado</dt><dd>{project.status || 'PENDIENTE'}</dd></div><div><dt>Aprendizaje</dt><dd>{project.learnings.length ? project.learnings.join(' · ') : 'PENDIENTE'}</dd></div></dl><div className="secondary-project__links">{project.links.demo ? <a href={project.links.demo} target="_blank" rel="noreferrer">Demo ↗</a> : <span>Demo pendiente</span>}{project.links.repository ? <a href={project.links.repository} target="_blank" rel="noreferrer">Repositorio ↗</a> : <span>Repositorio pendiente</span>}</div></div></article>)}</div></div>;
 }

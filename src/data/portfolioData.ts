@@ -1,0 +1,73 @@
+export type SceneTone = 'ink' | 'paper' | 'mist' | 'brand';
+
+export interface PortfolioScene {
+  id: string;
+  number: string;
+  label: string;
+  title: string;
+  summary: string;
+  tone: SceneTone;
+  height: 'compact' | 'regular' | 'feature';
+}
+
+export interface PortfolioProject {
+  id: string;
+  name: string;
+  featured?: boolean;
+  status: string;
+  summary: string;
+  problem: string;
+  audience: string;
+  technologies: string[];
+  image?: { src: string; alt: string };
+  links: { project?: string; repository?: string };
+}
+
+export interface PortfolioData {
+  identity: {
+    name: string; monogram: string; role: string; description: string; location: string;
+    photo: { src: string; alt: string };
+    contact: { email: string; github: string; linkedin: string; curriculum: string };
+  };
+  scenes: PortfolioScene[];
+  technologies: Array<{ label: string; items: string[] }>;
+  projects: PortfolioProject[];
+  progress: { contributions: number; message: string };
+  education: { studies: string[]; certifications: Array<{ name: string; level: 'primary' | 'secondary' | 'supplementary' }> };
+  goals: string[];
+}
+
+/** Fuente única de contenido. Completa solo datos y recursos verificados antes de publicar. */
+export const portfolioData: PortfolioData = {
+  identity: {
+    name: 'Cristopher Javier',
+    monogram: 'CJ',
+    role: 'Desarrollador en formación / desarrollador junior',
+    description: 'Estoy comenzando en programación, construyendo proyectos propios y desarrollando progresivamente mis conocimientos.',
+    location: '',
+    photo: { src: '', alt: 'Fotografía principal de Cristopher Javier' },
+    contact: { email: '', github: '', linkedin: '', curriculum: '' },
+  },
+  scenes: [
+    { id: 'presentacion', number: '01', label: 'El inicio', title: 'Construyendo mi camino en desarrollo de software.', summary: 'Una presentación personal sobre el punto en el que estoy y la dirección en la que avanzo.', tone: 'ink', height: 'feature' },
+    { id: 'punto-de-partida', number: '02', label: 'Punto de partida', title: 'Toda trayectoria empieza por una pregunta.', summary: 'El contexto que me llevó a empezar a aprender programación.', tone: 'paper', height: 'regular' },
+    { id: 'forma-de-aprender', number: '03', label: 'Método', title: 'Aprender, probar y volver a construir.', summary: 'Mi forma de avanzar a través de curiosidad, práctica y proyectos propios.', tone: 'mist', height: 'regular' },
+    { id: 'tecnologias', number: '04', label: 'Sistema actual', title: 'Tecnología puesta en contexto.', summary: 'Herramientas organizadas por práctica actual, flujo de trabajo y exploración.', tone: 'ink', height: 'feature' },
+    { id: 'proyecto-principal', number: '05', label: 'Caso principal', title: 'El trabajo que más espacio merece.', summary: 'Un caso de estudio real mostrará problema, decisiones y aprendizaje.', tone: 'paper', height: 'feature' },
+    { id: 'otros-proyectos', number: '06', label: 'Más capítulos', title: 'Cada proyecto añade una capa.', summary: 'Trabajos secundarios presentados como capítulos, no como una cuadrícula de tarjetas.', tone: 'mist', height: 'regular' },
+    { id: 'progreso', number: '07', label: 'Constancia', title: 'El progreso también es volver mañana.', summary: 'La actividad es una señal de hábito y aprendizaje, no una promesa de seniority.', tone: 'ink', height: 'compact' },
+    { id: 'formacion', number: '08', label: 'Base', title: 'Formación que acompaña la práctica.', summary: 'Estudios y certificaciones con jerarquía clara y verificable.', tone: 'paper', height: 'regular' },
+    { id: 'proximo-nivel', number: '09', label: 'Dirección', title: 'Preparado para el siguiente paso.', summary: 'Metas realistas para convertir la formación actual en experiencia profesional.', tone: 'brand', height: 'regular' },
+    { id: 'contacto', number: '10', label: 'Cierre', title: 'La próxima conversación puede abrir otro capítulo.', summary: 'Una invitación clara a conectar, colaborar o considerar una oportunidad junior.', tone: 'ink', height: 'feature' },
+  ],
+  technologies: [
+    { label: 'Utilizo actualmente', items: ['React', 'TypeScript', 'Vite'] },
+    { label: 'Sigo practicando', items: ['CSS', 'Tailwind CSS'] },
+    { label: 'Flujo de trabajo', items: ['Git', 'GitHub'] },
+    { label: 'Comenzando a explorar', items: [] },
+  ],
+  projects: [],
+  progress: { contributions: 105, message: 'Una cifra editable que representa constancia de aprendizaje y construcción, no una hazaña extraordinaria.' },
+  education: { studies: [], certifications: [{ name: 'BAM Certified', level: 'supplementary' }, { name: 'KRII', level: 'supplementary' }] },
+  goals: ['Fortalecer fundamentos de desarrollo de software.', 'Mejorar progresivamente en desarrollo web.', 'Construir proyectos más completos.', 'Colaborar y aprender dentro de un equipo.', 'Conseguir una primera oportunidad profesional.'],
+};

@@ -29,6 +29,16 @@ export interface PortfolioData {
     photo: { src: string; alt: string };
     contact: { email: string; github: string; linkedin: string; curriculum: string };
   };
+  presentation: {
+    phrase: string;
+  };
+  origin: {
+    story: string;
+    currentStudies: string;
+    motivation: string;
+    initialGoal: string;
+    secondaryPhoto: { src: string; alt: string };
+  };
   scenes: PortfolioScene[];
   technologies: Array<{ label: string; items: string[] }>;
   projects: PortfolioProject[];
@@ -48,9 +58,19 @@ export const portfolioData: PortfolioData = {
     photo: { src: '', alt: 'Fotografía principal de Cristopher Javier' },
     contact: { email: '', github: '', linkedin: '', curriculum: '' },
   },
+  presentation: {
+    phrase: '',
+  },
+  origin: {
+    story: '',
+    currentStudies: '',
+    motivation: '',
+    initialGoal: '',
+    secondaryPhoto: { src: '', alt: 'Fotografía secundaria relacionada con el inicio de Cristopher Javier' },
+  },
   scenes: [
     { id: 'presentacion', number: '01', label: 'El inicio', title: 'Construyendo mi camino en desarrollo de software.', summary: 'Una presentación personal sobre el punto en el que estoy y la dirección en la que avanzo.', tone: 'ink', height: 'feature' },
-    { id: 'punto-de-partida', number: '02', label: 'Punto de partida', title: 'Toda trayectoria empieza por una pregunta.', summary: 'El contexto que me llevó a empezar a aprender programación.', tone: 'paper', height: 'regular' },
+    { id: 'punto-de-partida', number: '02', label: 'Punto de partida', title: 'El punto de partida.', summary: 'Un capítulo para documentar cómo comenzó este recorrido.', tone: 'paper', height: 'regular' },
     { id: 'forma-de-aprender', number: '03', label: 'Método', title: 'Aprender, probar y volver a construir.', summary: 'Mi forma de avanzar a través de curiosidad, práctica y proyectos propios.', tone: 'mist', height: 'regular' },
     { id: 'tecnologias', number: '04', label: 'Sistema actual', title: 'Tecnología puesta en contexto.', summary: 'Herramientas organizadas por práctica actual, flujo de trabajo y exploración.', tone: 'ink', height: 'feature' },
     { id: 'proyecto-principal', number: '05', label: 'Caso principal', title: 'El trabajo que más espacio merece.', summary: 'Un caso de estudio real mostrará problema, decisiones y aprendizaje.', tone: 'paper', height: 'feature' },

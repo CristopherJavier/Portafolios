@@ -27,7 +27,7 @@ export function PortfolioExperience({ data }: { data: PortfolioData }) {
   return <div className="portfolio-experience" style={{ '--active-scene': activeIndex } as CSSProperties}>
     <a className="skip-link" href="#main-content">Saltar al contenido</a>
     <MinimalNavigation monogram={data.identity.monogram} name={data.identity.name} scenes={data.scenes} activeIndex={activeIndex} />
-    <main id="main-content">{data.scenes.map((scene, index) => <Scene key={scene.id} scene={scene} active={index === activeIndex}><SceneHeader scene={scene} /><SceneContent scene={scene} data={data} /><ScrollIndicator nextScene={data.scenes[index + 1]} /></Scene>)}</main>
+    <main id="main-content">{data.scenes.map((scene, index) => <Scene key={scene.id} scene={scene} active={index === activeIndex}>{scene.id === 'presentacion' ? <PresentationScene data={data} /> : scene.id === 'punto-de-partida' ? <OriginScene scene={scene} data={data} /> : <><SceneHeader scene={scene} /><SceneContent scene={scene} data={data} /></>}<ScrollIndicator nextScene={data.scenes[index + 1]} /></Scene>)}</main>
   </div>;
 }
 
@@ -42,4 +42,55 @@ function SceneContent({ scene, data }: { scene: PortfolioScene; data: PortfolioD
   if (scene.id === 'proximo-nivel') return <ol className="goal-list">{data.goals.map((goal, index) => <li key={goal}><span>{String(index + 1).padStart(2, '0')}</span>{goal}</li>)}</ol>;
   if (scene.id === 'contacto') return <div className="contact-foundation"><Reveal><p>Disponible para conversar sobre colaboración, aprendizaje y oportunidades junior.</p></Reveal><SocialLinks {...data.identity.contact} /></div>;
   return <p className="scene-placeholder">El contenido de este capítulo se desarrollará con información personal verificada.</p>;
+}
+
+function PresentationScene({ data }: { data: PortfolioData }) {
+  const { identity, presentation } = data;
+  const hasPhoto = Boolean(identity.photo.src);
+  const contactLinks = [
+    identity.contact.curriculum && { label: 'Ver currículum', href: identity.contact.curriculum },
+    identity.contact.github && { label: 'GitHub', href: identity.contact.github },
+    identity.contact.linkedin && { label: 'LinkedIn', href: identity.contact.linkedin },
+  ].filter(Boolean) as Array<{ label: string; href: string }>;
+
+  return <div className="presentation-cover">
+    <div className="presentation-cover__heading">
+      <p className="presentation-cover__chapter">01 — Portada</p>
+      <h1 id="scene-title-presentacion" className="presentation-cover__name">{identity.name}</h1>
+    </div>
+    <div className="presentation-cover__media" data-ready={hasPhoto} role={hasPhoto ? undefined : 'img'} aria-label={hasPhoto ? undefined : identity.photo.alt}>
+      {hasPhoto ? <img src={identity.photo.src} alt={identity.photo.alt} fetchPriority="high" /> : <span>Fotografía principal pendiente</span>}
+    </div>
+    <div className="presentation-cover__details">
+      <Reveal className="presentation-cover__role"><p>{identity.role}</p></Reveal>
+      <Reveal delay="reveal--late" className="presentation-cover__phrase"><p>{presentation.phrase || 'FRASE PRINCIPAL — PENDIENTE DE CONFIGURAR'}</p></Reveal>
+      <Reveal delay="reveal--later" className="presentation-cover__actions">
+        <a className="action-link action-link--primary" href="#scene-proyecto-principal">Conocer proyectos <span aria-hidden="true">↘</span></a>
+        {contactLinks.map((link) => <a key={link.label} className="action-link" href={link.href} target={link.href.startsWith('http') ? '_blank' : undefined} rel={link.href.startsWith('http') ? 'noreferrer' : undefined}>{link.label}<span aria-hidden="true"> ↗</span></a>)}
+        {!identity.contact.curriculum && <span className="action-link action-link--pending">Currículum pendiente</span>}
+        {!identity.contact.github && <span className="action-link action-link--pending">GitHub pendiente</span>}
+        {!identity.contact.linkedin && <span className="action-link action-link--pending">LinkedIn pendiente</span>}
+      </Reveal>
+    </div>
+  </div>;
+}
+
+function OriginScene({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
+  const details = [
+    { label: 'Cómo comenzó', value: data.origin.story, placeholder: 'HISTORIA DE INICIO — PENDIENTE DE CONFIGURAR' },
+    { label: 'Qué estudio o aprendo', value: data.origin.currentStudies, placeholder: 'ESTUDIOS ACTUALES — PENDIENTE DE CONFIGURAR' },
+    { label: 'Qué me movió a crear', value: data.origin.motivation, placeholder: 'MOTIVACIÓN — PENDIENTE DE CONFIGURAR' },
+    { label: 'El objetivo inicial', value: data.origin.initialGoal, placeholder: 'OBJETIVO INICIAL — PENDIENTE DE CONFIGURAR' },
+  ];
+
+  return <div className="origin-chapter">
+    <SceneHeader scene={scene} />
+    <div className="origin-chapter__layout">
+      <Reveal className="origin-chapter__quote"><blockquote>{data.origin.story || 'HISTORIA DE INICIO — PENDIENTE DE CONFIGURAR'}</blockquote><p>Capítulo 02 / Punto de partida</p></Reveal>
+      <div className="origin-chapter__media" role={data.origin.secondaryPhoto.src ? undefined : 'img'} aria-label={data.origin.secondaryPhoto.src ? undefined : data.origin.secondaryPhoto.alt}>
+        {data.origin.secondaryPhoto.src ? <img src={data.origin.secondaryPhoto.src} alt={data.origin.secondaryPhoto.alt} loading="lazy" /> : <span>Fotografía secundaria pendiente</span>}
+      </div>
+      <div className="origin-chapter__details">{details.map((detail, index) => <Reveal key={detail.label} delay={index > 1 ? 'reveal--later' : 'reveal--late'} className="origin-detail"><span>{String(index + 1).padStart(2, '0')} / {detail.label}</span><p>{detail.value || detail.placeholder}</p></Reveal>)}<p className="origin-chapter__note">Todavía estoy construyendo experiencia. Este portafolio documenta ese progreso a través de aprendizaje y proyectos propios.</p></div>
+    </div>
+  </div>;
 }

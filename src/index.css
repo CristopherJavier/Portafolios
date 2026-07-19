@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "Fira Code", ui-monospace, SFMono-Regular, monospace;
+
+  --color-portfolio-primary: #1A1A1A;
+  --color-portfolio-secondary: #4A4A4A;
+  --color-portfolio-accent: #2563EB;
+  --color-portfolio-accent-hover: #1D4ED8;
+  --color-portfolio-bg-main: #F8FAFC;
+  --color-portfolio-bg-alt: #FFFFFF;
+  --color-portfolio-text-primary: #0F172A;
+  --color-portfolio-text-secondary: #64748B;
+  --color-portfolio-border: #E2E8F0;
+  --color-portfolio-success: #10B981;
+  --color-portfolio-pending: #F59E0B;
+}
+
+/* Custom Base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-portfolio-bg-main);
+    color: var(--color-portfolio-text-primary);
+    font-family: var(--font-sans);
+  }
+
+  /* Accessibility Focus Rings */
+  *:focus-visible {
+    outline: 2px solid var(--color-portfolio-accent) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto !important;
+    }
+    
+    *, ::before, ::after {
+      animation-delay: -1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      background-attachment: initial !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-portfolio-bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Custom glow animation */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 10s infinite ease-in-out;
+}
+

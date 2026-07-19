@@ -39,7 +39,8 @@ Estas reglas son prioritarias y no pueden ignorarse:
 - No deben utilizarse temporizadores para cambiar de escena.
 - La transición debe estar vinculada al progreso real del scroll.
 - Un scroll parcial debe producir una transición parcial.
-- Al detener el scroll, la transición debe detenerse.
+- Cuando termina la entrada del usuario, la posición objetivo deja de cambiar. La representación visual puede continuar brevemente por la amortiguación, debe desacelerar hasta alcanzar exactamente el objetivo y entonces quedar completamente detenida.
+- La representación visual no puede superar el objetivo, avanzar automáticamente ni cambiar de escena sin una modificación real del scroll.
 - Al hacer scroll hacia arriba, las transiciones deben reproducirse en sentido inverso.
 - La escena siguiente debe cubrir completamente a la anterior.
 - Al completar la transición, la escena anterior no debe continuar visible.
@@ -275,6 +276,13 @@ El currículum solo debe poder descargarse.
 La paleta debe inspirarse en la fotografía principal de Cristopher.
 
 Debe utilizar pocos colores.
+
+Paleta oficial:
+
+- Melocotón cálido: `#e49d73`.
+- Carbón: `#0c0d0d`.
+- Blanco cálido: `#f1f5f2`.
+- Marrón cálido: `#bc844f`.
 
 Dirección aproximada:
 

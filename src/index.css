@@ -1,11 +1,15 @@
 :root {
-  color: #f4f0e8;
-  background: #1d1c1a;
+  --color-peach: #e49d73;
+  --color-charcoal: #0c0d0d;
+  --color-warm-white: #f1f5f2;
+  --color-warm-brown: #bc844f;
+  color: var(--color-charcoal);
+  background: var(--color-warm-white);
   font-family: system-ui, sans-serif;
 }
 
 html {
-  background: #1d1c1a;
+  background: var(--color-charcoal);
   scrollbar-width: none;
 }
 
@@ -29,12 +33,13 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid #f4f0e8;
+  outline: 2px solid var(--color-warm-brown);
   outline-offset: 4px;
 }
 
 .layered-scroll {
-  --scroll-progress: 0;
+  --target-progress: 0;
+  --rendered-progress: 0;
   position: relative;
   height: 500vh;
   height: 500svh;
@@ -59,8 +64,8 @@ body {
   place-items: center;
   margin: 0;
   padding: clamp(1.5rem, 5vw, 5rem);
-  background: #1d1c1a;
-  color: #f4f0e8;
+  background: var(--color-warm-white);
+  color: var(--color-charcoal);
   transform: translate3d(var(--layer-x), var(--layer-y), 0);
   will-change: transform;
 }
@@ -75,11 +80,11 @@ body {
   --layer-y: 0%;
 }
 
-.layered-scene[data-scene='1'] { z-index: 1; background: #1d1c1a; }
-.layered-scene[data-scene='2'] { z-index: 2; background: #292725; }
-.layered-scene[data-scene='3'] { z-index: 3; background: #34302b; }
-.layered-scene[data-scene='4'] { z-index: 4; background: #3c342d; }
-.layered-scene[data-scene='5'] { z-index: 5; background: #252321; }
+.layered-scene[data-scene='1'] { z-index: 1; background: var(--color-warm-white); }
+.layered-scene[data-scene='2'] { z-index: 2; background: var(--color-peach); }
+.layered-scene[data-scene='3'] { z-index: 3; background: var(--color-warm-white); }
+.layered-scene[data-scene='4'] { z-index: 4; background: var(--color-warm-brown); }
+.layered-scene[data-scene='5'] { z-index: 5; background: var(--color-charcoal); color: var(--color-warm-white); }
 
 .layered-scene h1,
 .layered-scene h2 {
@@ -96,6 +101,6 @@ body {
   .layered-scene {
     opacity: var(--layer-opacity);
     transform: none;
-    will-change: opacity;
+    will-change: auto;
   }
 }

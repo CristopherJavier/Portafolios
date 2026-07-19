@@ -47,8 +47,19 @@ export interface PortfolioData {
   technologies: Array<{ name: string; category: string; stages: string[] }>;
   technologyStages: Array<{ id: string; label: string }>;
   projects: PortfolioProject[];
-  progress: { contributions: number; message: string };
-  education: { studies: string[]; certifications: Array<{ name: string; level: 'primary' | 'secondary' | 'supplementary' }> };
+  github: {
+    /** `manual` is an editable summary, not a representation of daily GitHub events. */
+    source: 'manual' | 'api';
+    contributions: number;
+    message: string;
+    profileUrl: string;
+    featuredRepositories: Array<{ name: string; description: string; technologies: string[]; url: string }>;
+  };
+  education: {
+    studies: Array<{ title: string; status: 'current' | 'completed'; date: string; institution: string; evidenceUrl: string }>;
+    courses: Array<{ title: string; status: 'completed' | 'in-progress'; date: string; institution: string; evidenceUrl: string }>;
+    certifications: Array<{ name: string; level: 'primary' | 'secondary'; date: string; institution: string; evidenceUrl: string }>;
+  };
   goals: string[];
 }
 
@@ -138,7 +149,21 @@ export const portfolioData: PortfolioData = {
     { id: 'secondary-02', name: '', description: '', problem: '', audience: '', features: [], technologies: [], captures: [], status: '', learnings: [], links: { demo: '', repository: '' } },
     { id: 'secondary-03', name: '', description: '', problem: '', audience: '', features: [], technologies: [], captures: [], status: '', learnings: [], links: { demo: '', repository: '' } },
   ],
-  progress: { contributions: 105, message: 'Una cifra editable que representa constancia de aprendizaje y construcción, no una hazaña extraordinaria.' },
-  education: { studies: [], certifications: [{ name: 'BAM Certified', level: 'supplementary' }, { name: 'KRII', level: 'supplementary' }] },
-  goals: ['Fortalecer fundamentos de desarrollo de software.', 'Mejorar progresivamente en desarrollo web.', 'Construir proyectos más completos.', 'Colaborar y aprender dentro de un equipo.', 'Conseguir una primera oportunidad profesional.'],
+  // Change `source` to `api` only after wiring a verified GitHub integration.
+  github: {
+    source: 'manual',
+    contributions: 105,
+    message: 'Cada aporte resume un momento en el que decidí continuar construyendo, probando y aprendiendo.',
+    profileUrl: '',
+    featuredRepositories: [],
+  },
+  education: {
+    studies: [],
+    courses: [],
+    certifications: [
+      { name: 'BAM Certified', level: 'secondary', date: '', institution: '', evidenceUrl: '' },
+      { name: 'KRII', level: 'secondary', date: '', institution: '', evidenceUrl: '' },
+    ],
+  },
+  goals: ['Continuar fortaleciendo fundamentos de desarrollo de software.', 'Mejorar en React y desarrollo web.', 'Construir proyectos más completos.', 'Aprender a colaborar mejor con Git y GitHub.', 'Obtener una primera oportunidad profesional.', 'Continuar documentando el progreso.'],
 };

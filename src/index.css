@@ -155,6 +155,59 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .secondary-project__links { display: flex; gap: 1.25rem; margin-top: 1.25rem; color: var(--color-muted); font-size: .76rem; }
 .secondary-project__links a { color: var(--color-text); font-weight: 700; text-underline-offset: .3em; }
 
+/* Scene 07 — a manual rhythm visual, deliberately distinct from a real GitHub calendar. */
+.github-progress { width: min(100%, var(--width-wide)); margin-inline: auto; }
+.github-progress__layout { display: grid; grid-template-columns: minmax(15rem, .75fr) minmax(17rem, 1.25fr); gap: clamp(2rem, 7vw, 8rem); align-items: center; margin-top: clamp(2.5rem, 7vh, 6rem); }
+.github-progress__number { display: block; font-family: var(--font-display); font-size: clamp(5rem, 11vw, 10rem); letter-spacing: -.08em; line-height: .8; }
+.github-progress__summary p { max-width: 32ch; margin: 1.5rem 0; color: var(--scene-muted); line-height: 1.7; }
+.github-progress__source, .github-progress__pending { display: block; color: var(--color-accent); font-size: .68rem; font-weight: 700; letter-spacing: .09em; line-height: 1.5; text-transform: uppercase; }
+.github-progress__summary > a { display: inline-block; margin-top: 1.25rem; color: var(--color-white); font-size: .8rem; font-weight: 700; text-underline-offset: .35em; }
+.github-progress__matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: clamp(.35rem, 1vw, .75rem); max-width: 38rem; }
+.github-progress__matrix span { aspect-ratio: 1; background: color-mix(in srgb, var(--color-brand) 62%, var(--color-ink)); opacity: .25; transform: translate3d(0, .5rem, 0); transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out); }
+.github-progress__matrix span:nth-child(4n), .github-progress__matrix span:nth-child(7n) { background: var(--color-accent); }
+.scene[data-active="true"] .github-progress__matrix span { opacity: 1; transform: none; }
+.scene[data-active="true"] .github-progress__matrix span:nth-child(3n) { transition-delay: 90ms; }
+.scene[data-active="true"] .github-progress__matrix span:nth-child(4n) { transition-delay: 180ms; }
+.scene[data-active="true"] .github-progress__matrix span:nth-child(5n) { transition-delay: 260ms; }
+.github-progress__note { max-width: 51ch; margin: 1.5rem 0 0; color: var(--scene-muted); font-size: .76rem; line-height: 1.6; }
+.repository-list { display: grid; gap: 0; margin-top: clamp(2.5rem, 6vh, 5rem); border-top: 1px solid rgb(255 255 255 / 22%); }
+.repository-list > span { padding: 1rem 0; color: var(--color-accent); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.repository-list article { display: grid; grid-template-columns: minmax(10rem, .5fr) 1fr auto; gap: 1rem; align-items: baseline; padding: 1rem 0; border-top: 1px solid rgb(255 255 255 / 22%); }
+.repository-list h3, .repository-list p, .repository-list small { margin: 0; }
+.repository-list h3 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 400; }
+.repository-list p, .repository-list small { color: var(--scene-muted); font-size: .78rem; line-height: 1.5; }
+.repository-list a { color: var(--color-white); font-size: .75rem; font-weight: 700; text-underline-offset: .3em; }
+
+/* Scene 08 — an ordered learning ledger with secondary certification visibly present at the end. */
+.education-journey { width: min(100%, var(--width-content)); margin-inline: auto; }
+.education-journey__list { display: grid; gap: 0; margin-top: clamp(2.5rem, 7vh, 6rem); border-top: 1px solid var(--color-line); }
+.education-group { padding: 1.4rem 0; border-bottom: 1px solid var(--color-line); opacity: .3; transform: translate3d(0, .75rem, 0); transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out); }
+.scene[data-active="true"] .education-group { opacity: 1; transform: none; }
+.scene[data-active="true"] .education-group:nth-child(2) { transition-delay: 80ms; }
+.scene[data-active="true"] .education-group:nth-child(3) { transition-delay: 140ms; }
+.scene[data-active="true"] .education-group:nth-child(4) { transition-delay: 200ms; }
+.scene[data-active="true"] .education-group:nth-child(5) { transition-delay: 260ms; }
+.education-group h3 { margin: 0 0 .9rem; color: var(--color-accent); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.education-group ul { display: grid; gap: .6rem; margin: 0; padding: 0; list-style: none; }
+.education-group li { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+.education-group strong { display: block; font-family: var(--font-display); font-size: clamp(1.25rem, 2vw, 1.75rem); font-weight: 400; line-height: 1.1; }
+.education-group li span, .education-group > p { color: var(--color-muted); font-size: .76rem; line-height: 1.5; }
+.education-group li > a, .education-group li > span { flex: 0 0 auto; color: var(--color-text); font-size: .72rem; font-weight: 700; text-underline-offset: .3em; }
+.education-group--secondary { margin-top: 1rem; color: var(--color-muted); }
+.education-group--secondary h3 { color: var(--color-muted); }
+.education-group--secondary strong { font-size: 1.05rem; }
+.education-group--secondary li > a, .education-group--secondary li > span { color: var(--color-muted); }
+
+/* Scene 09 — a short forward path, not a technology roadmap. */
+.next-level { width: min(100%, var(--width-content)); margin-inline: auto; }
+.next-level__path { max-width: 52rem; margin-top: clamp(2.5rem, 7vh, 6rem); }
+.next-level__path ol { position: relative; display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.next-level__path ol::before { position: absolute; left: .25rem; top: 1.25rem; bottom: 1.25rem; width: 1px; background: rgb(255 255 255 / 35%); content: ""; }
+.next-level__path li { position: relative; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; padding: 1.15rem 0; }
+.next-level__path li span { z-index: 1; display: grid; width: .55rem; height: .55rem; margin: .45rem 0 0; place-items: center; border-radius: 50%; background: var(--color-accent); color: transparent; }
+.next-level__path li p { max-width: 32ch; margin: 0; color: var(--color-white); font-family: var(--font-display); font-size: clamp(1.55rem, 2.6vw, 2.8rem); letter-spacing: -.04em; line-height: 1.05; }
+.next-level__closing { max-width: 39ch; margin: 2rem 0 0 3rem; color: var(--scene-muted); line-height: 1.65; }
+
 @media (max-width: 980px) {
   .presentation-cover__media { grid-column: 7 / -1; }
   .presentation-cover__details { grid-column: 1 / 8; }
@@ -166,6 +219,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .technology-system__categories { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; }
   .featured-project { grid-template-columns: minmax(14rem, .8fr) minmax(16rem, 1.2fr); gap: 3rem; }
   .secondary-project { gap: 2.5rem; }
+  .github-progress__layout { gap: 3rem; }
+  .repository-list article { grid-template-columns: minmax(9rem, .6fr) 1fr; }
+  .repository-list article > a, .repository-list article > span { grid-column: 2; }
 }
 
 .minimal-navigation { position: fixed; left: clamp(.75rem, 2vw, 2rem); top: 50%; z-index: var(--z-navigation); display: grid; gap: 1rem; align-items: center; transform: translateY(-50%); color: var(--color-white); }
@@ -259,6 +315,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .secondary-project { grid-template-columns: 1fr; gap: 1.25rem; }
   .secondary-project:nth-child(even) .secondary-project__media { order: 0; }
   .secondary-project dl > div { grid-template-columns: 6rem 1fr; }
+  .github-progress__layout { grid-template-columns: 1fr; gap: 2rem; }
+  .github-progress__matrix { max-width: none; }
+  .repository-list article { grid-template-columns: 1fr; gap: .5rem; }
+  .repository-list article > a, .repository-list article > span { grid-column: auto; }
+  .education-group li { display: grid; grid-template-columns: 1fr; gap: .4rem; }
+  .education-group li > a, .education-group li > span { justify-self: start; }
   .scene-intro, .project-foundation { grid-template-columns: 1fr; }
   .portrait-frame { min-height: 75vw; }
   .technology-layer { grid-template-columns: 1fr; gap: .5rem; }

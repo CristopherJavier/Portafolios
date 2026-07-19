@@ -76,7 +76,7 @@ export const portfolioData: PortfolioData = {
     contact: { email: '', github: '', linkedin: '', curriculum: '' },
   },
   presentation: {
-    phrase: '',
+    phrase: 'Construyendo proyectos propios mientras desarrollo mis fundamentos.',
   },
   origin: {
     story: '',
@@ -146,9 +146,6 @@ export const portfolioData: PortfolioData = {
       learnings: [],
       links: { demo: '', repository: '' },
     },
-    { id: 'secondary-01', name: '', description: '', problem: '', audience: '', features: [], technologies: [], captures: [], status: '', learnings: [], links: { demo: '', repository: '' } },
-    { id: 'secondary-02', name: '', description: '', problem: '', audience: '', features: [], technologies: [], captures: [], status: '', learnings: [], links: { demo: '', repository: '' } },
-    { id: 'secondary-03', name: '', description: '', problem: '', audience: '', features: [], technologies: [], captures: [], status: '', learnings: [], links: { demo: '', repository: '' } },
   ],
   // Change `source` to `api` only after wiring a verified GitHub integration.
   github: {

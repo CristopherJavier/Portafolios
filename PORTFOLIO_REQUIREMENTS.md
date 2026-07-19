@@ -109,16 +109,17 @@ La primera escena debe mostrar:
 
 La fotografía principal debe dominar visualmente la escena.
 
+La fotografía puede integrarse en una composición circular de gran escala cuando preserve la calidad percibida, mantenga el rostro visible y no se perciba como un avatar genérico.
+
 La fotografía no debe aparecer dentro de:
 
 - Un avatar pequeño.
-- Un círculo.
 - Una tarjeta.
 - Un rectángulo vacío.
 - Un marco genérico.
 - Un mockup.
 
-Debe utilizarse como imagen de gran escala, idealmente de borde a borde o integrada como elemento principal de toda la pantalla.
+Debe utilizarse como imagen de gran escala, integrada como elemento principal de toda la pantalla.
 
 No agregar LinkedIn todavía.
 

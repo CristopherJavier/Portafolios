@@ -94,3 +94,201 @@ body {
   text-align: center;
   text-wrap: balance;
 }
+
+.layered-scene--presentation {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--color-warm-white);
+}
+
+.layered-scene--presentation.layered-scene[data-scene='1'] {
+  background: var(--color-charcoal);
+}
+
+.presentation-scene__portrait-art,
+.presentation-scene__content {
+  position: absolute;
+}
+
+.presentation-scene__portrait-art {
+  z-index: 1;
+  top: 50%;
+  right: clamp(3rem, 9vw, 10rem);
+  width: clamp(18rem, 31vw, 25rem);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  transition: transform 260ms ease-out;
+}
+
+.presentation-scene__portrait-art::before,
+.presentation-scene__portrait-art::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.presentation-scene__portrait-art::before {
+  inset: -1.25rem 1rem 1rem -1.25rem;
+  border: 1px solid var(--color-warm-white);
+}
+
+.presentation-scene__portrait-art::after {
+  right: -1.5rem;
+  bottom: -1.5rem;
+  width: 58%;
+  background: var(--color-peach);
+}
+
+.presentation-scene__portrait {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.presentation-scene__content {
+  z-index: 2;
+  inset: 0 auto 0 0;
+  display: flex;
+  width: min(54%, 48rem);
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: clamp(1.5rem, 5vw, 5rem);
+}
+
+.presentation-scene__role,
+.presentation-scene__statement,
+.presentation-scene__location {
+  margin: 0;
+}
+
+.presentation-scene__role {
+  max-width: 28ch;
+  margin-bottom: clamp(0.9rem, 2vw, 1.5rem);
+  color: var(--color-peach);
+  font-size: clamp(0.75rem, 1vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.layered-scene--presentation h1 {
+  max-width: 8ch;
+  margin: 0;
+  color: var(--color-warm-white);
+  font-size: clamp(3.25rem, 8vw, 8.5rem);
+  font-weight: 650;
+  letter-spacing: -0.07em;
+  line-height: 0.82;
+  text-align: left;
+}
+
+.presentation-scene__statement {
+  max-width: 37ch;
+  margin-top: clamp(1.25rem, 3vw, 2.25rem);
+  color: var(--color-warm-white);
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  line-height: 1.45;
+}
+
+.presentation-scene__location {
+  max-width: 35ch;
+  margin-top: 1rem;
+  color: var(--color-peach);
+  font-size: clamp(0.82rem, 1.1vw, 0.98rem);
+  line-height: 1.4;
+}
+
+.presentation-scene__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(1.35rem, 3vw, 2.25rem);
+}
+
+.presentation-scene__actions a {
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--color-peach);
+  color: var(--color-warm-white);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.presentation-scene__actions a:last-child {
+  background: var(--color-peach);
+  color: var(--color-charcoal);
+}
+
+.presentation-scene__actions a:hover {
+  background: var(--color-warm-brown);
+  border-color: var(--color-warm-brown);
+  color: var(--color-charcoal);
+}
+
+@media (hover: hover) {
+  .presentation-scene__portrait-art:hover {
+    transform: translateY(calc(-50% - 0.5rem)) rotate(-1deg);
+  }
+}
+
+@media (max-width: 48rem) {
+  .presentation-scene__portrait-art {
+    top: 1.5rem;
+    right: 50%;
+    width: clamp(13.5rem, 58vw, 19rem);
+    transform: translateX(50%);
+  }
+
+  .presentation-scene__content {
+    top: auto;
+    width: 100%;
+    height: 53%;
+    padding: clamp(1.25rem, 6vw, 2rem);
+  }
+
+  .presentation-scene__role {
+    margin-bottom: 0.75rem;
+  }
+
+  .layered-scene--presentation h1 {
+    font-size: clamp(3.1rem, 14vw, 5.25rem);
+  }
+
+  .presentation-scene__statement {
+    margin-top: 1rem;
+    font-size: clamp(0.92rem, 4vw, 1.08rem);
+  }
+
+  .presentation-scene__location {
+    margin-top: 0.75rem;
+  }
+
+  .presentation-scene__actions {
+    width: 100%;
+    margin-top: 1.1rem;
+  }
+
+  .presentation-scene__actions a {
+    flex: 1 1 9rem;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presentation-scene__portrait-art,
+  .presentation-scene__actions a {
+    transition: none;
+  }
+}

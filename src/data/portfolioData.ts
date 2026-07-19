@@ -40,7 +40,10 @@ export interface PortfolioData {
     secondaryPhoto: { src: string; alt: string };
   };
   scenes: PortfolioScene[];
-  technologies: Array<{ label: string; items: string[] }>;
+  learningPrinciples: string[];
+  technologyCategories: Array<{ id: string; label: string }>;
+  technologies: Array<{ name: string; category: string; stages: string[] }>;
+  technologyStages: Array<{ id: string; label: string }>;
   projects: PortfolioProject[];
   progress: { contributions: number; message: string };
   education: { studies: string[]; certifications: Array<{ name: string; level: 'primary' | 'secondary' | 'supplementary' }> };
@@ -80,11 +83,39 @@ export const portfolioData: PortfolioData = {
     { id: 'proximo-nivel', number: '09', label: 'Dirección', title: 'Preparado para el siguiente paso.', summary: 'Metas realistas para convertir la formación actual en experiencia profesional.', tone: 'brand', height: 'regular' },
     { id: 'contacto', number: '10', label: 'Cierre', title: 'La próxima conversación puede abrir otro capítulo.', summary: 'Una invitación clara a conectar, colaborar o considerar una oportunidad junior.', tone: 'ink', height: 'feature' },
   ],
+  learningPrinciples: [
+    'Aprendo construyendo proyectos.',
+    'Investigo los problemas que encuentro.',
+    'Intento comprender lo que implemento.',
+    'Mejoro los proyectos mediante iteraciones.',
+    'Todavía estoy desarrollando mis fundamentos.',
+    'Valoro la constancia por encima de aparentar experiencia.',
+  ],
+  technologyCategories: [
+    { id: 'current', label: 'Uso actual' },
+    { id: 'practice', label: 'En práctica' },
+    { id: 'workflow', label: 'Herramientas de trabajo' },
+    { id: 'exploring', label: 'Explorando' },
+  ],
+  technologyStages: [
+    { id: 'structure', label: 'Estructura' },
+    { id: 'interface', label: 'Interfaz' },
+    { id: 'logic', label: 'Lógica' },
+    { id: 'data', label: 'Datos' },
+    { id: 'versioning', label: 'Control de versiones' },
+    { id: 'publishing', label: 'Publicación' },
+  ],
   technologies: [
-    { label: 'Utilizo actualmente', items: ['React', 'TypeScript', 'Vite'] },
-    { label: 'Sigo practicando', items: ['CSS', 'Tailwind CSS'] },
-    { label: 'Flujo de trabajo', items: ['Git', 'GitHub'] },
-    { label: 'Comenzando a explorar', items: [] },
+    { name: 'HTML', category: 'current', stages: ['structure'] },
+    { name: 'CSS', category: 'current', stages: ['interface'] },
+    { name: 'JavaScript', category: 'current', stages: ['logic'] },
+    { name: 'React', category: 'practice', stages: ['interface', 'logic'] },
+    { name: 'Vite', category: 'workflow', stages: ['publishing'] },
+    { name: 'C#', category: 'practice', stages: ['logic'] },
+    { name: 'SQL', category: 'practice', stages: ['data'] },
+    { name: 'Git', category: 'workflow', stages: ['versioning'] },
+    { name: 'GitHub', category: 'workflow', stages: ['versioning', 'publishing'] },
+    { name: 'Firebase', category: 'exploring', stages: ['data', 'publishing'] },
   ],
   projects: [],
   progress: { contributions: 105, message: 'Una cifra editable que representa constancia de aprendizaje y construcción, no una hazaña extraordinaria.' },

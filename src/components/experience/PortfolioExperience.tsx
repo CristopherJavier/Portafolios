@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import { PortfolioData, PortfolioScene } from '../../data/portfolioData';
 import { MinimalNavigation } from './MinimalNavigation';
 import { ProjectMedia } from './ProjectMedia';
@@ -27,14 +27,13 @@ export function PortfolioExperience({ data }: { data: PortfolioData }) {
   return <div className="portfolio-experience" style={{ '--active-scene': activeIndex } as CSSProperties}>
     <a className="skip-link" href="#main-content">Saltar al contenido</a>
     <MinimalNavigation monogram={data.identity.monogram} name={data.identity.name} scenes={data.scenes} activeIndex={activeIndex} />
-    <main id="main-content">{data.scenes.map((scene, index) => <Scene key={scene.id} scene={scene} active={index === activeIndex}>{scene.id === 'presentacion' ? <PresentationScene data={data} /> : scene.id === 'punto-de-partida' ? <OriginScene scene={scene} data={data} /> : <><SceneHeader scene={scene} /><SceneContent scene={scene} data={data} /></>}<ScrollIndicator nextScene={data.scenes[index + 1]} /></Scene>)}</main>
+    <main id="main-content">{data.scenes.map((scene, index) => <Scene key={scene.id} scene={scene} active={index === activeIndex}>{scene.id === 'presentacion' ? <PresentationScene data={data} /> : scene.id === 'punto-de-partida' ? <OriginScene scene={scene} data={data} /> : scene.id === 'forma-de-aprender' ? <LearningScene scene={scene} data={data} /> : scene.id === 'tecnologias' ? <TechnologyScene scene={scene} data={data} /> : <><SceneHeader scene={scene} /><SceneContent scene={scene} data={data} /></>}<ScrollIndicator nextScene={data.scenes[index + 1]} /></Scene>)}</main>
   </div>;
 }
 
 function SceneContent({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
   const featuredProject = data.projects.find((project) => project.featured) ?? data.projects[0];
   if (scene.id === 'presentacion') return <div className="scene-intro"><Reveal><p className="scene-intro__role">{data.identity.role}</p></Reveal><Reveal delay="reveal--late"><p className="scene-intro__description">{data.identity.description}</p></Reveal><div className="portrait-frame" role="img" aria-label={data.identity.photo.alt}>{data.identity.photo.src ? <img src={data.identity.photo.src} alt={data.identity.photo.alt} fetchPriority="high" /> : <span>Fotografía principal pendiente</span>}</div></div>;
-  if (scene.id === 'tecnologias') return <div className="technology-layers" aria-label="Tecnologías por nivel de práctica">{data.technologies.map((group) => <Reveal key={group.label} className="technology-layer"><h3>{group.label}</h3><p>{group.items.length ? group.items.join(' · ') : 'Contenido pendiente de confirmar'}</p></Reveal>)}</div>;
   if (scene.id === 'proyecto-principal') return <div className="project-foundation"><ProjectMedia src={featuredProject?.image?.src} alt={featuredProject?.image?.alt ?? 'Captura del proyecto principal'} priority label="Captura del proyecto principal pendiente" /><Reveal className="project-foundation__copy"><p className="scene-detail-label">Caso de estudio</p><h3>{featuredProject?.name ?? 'Proyecto principal pendiente de confirmar'}</h3><p>{featuredProject?.summary ?? 'La estructura ya está preparada para documentar problema, audiencia, decisiones, tecnologías y aprendizaje con información real.'}</p></Reveal></div>;
   if (scene.id === 'otros-proyectos') { const projects = data.projects.filter((project) => !project.featured); return <div className="chapter-list">{projects.length ? projects.map((project, index) => <Reveal key={project.id} className="chapter-list__item"><span>{String(index + 1).padStart(2, '0')}</span><h3>{project.name}</h3><p>{project.status}</p></Reveal>) : <p className="scene-placeholder">Los proyectos secundarios aparecerán aquí como capítulos visuales cuando se incorporen datos verificados.</p>}</div>; }
   if (scene.id === 'progreso') return <div className="progress-foundation"><Reveal><span className="progress-foundation__number">≈{data.progress.contributions}</span></Reveal><Reveal delay="reveal--late"><p>{data.progress.message}</p></Reveal><div className="progress-foundation__grid" aria-label="Representación visual de constancia" aria-hidden="true">{Array.from({ length: 42 }, (_, index) => <span key={index} />)}</div></div>;
@@ -91,6 +90,71 @@ function OriginScene({ scene, data }: { scene: PortfolioScene; data: PortfolioDa
         {data.origin.secondaryPhoto.src ? <img src={data.origin.secondaryPhoto.src} alt={data.origin.secondaryPhoto.alt} loading="lazy" /> : <span>Fotografía secundaria pendiente</span>}
       </div>
       <div className="origin-chapter__details">{details.map((detail, index) => <Reveal key={detail.label} delay={index > 1 ? 'reveal--later' : 'reveal--late'} className="origin-detail"><span>{String(index + 1).padStart(2, '0')} / {detail.label}</span><p>{detail.value || detail.placeholder}</p></Reveal>)}<p className="origin-chapter__note">Todavía estoy construyendo experiencia. Este portafolio documenta ese progreso a través de aprendizaje y proyectos propios.</p></div>
+    </div>
+  </div>;
+}
+
+function LearningScene({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
+  const [activeStep, setActiveStep] = useState(0);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const progress = data.learningPrinciples.length > 1 ? activeStep / (data.learningPrinciples.length - 1) : 0;
+
+  useEffect(() => {
+    const root = sceneRef.current;
+    if (!root) return;
+    const steps = Array.from(root.querySelectorAll('[data-learning-step]')) as HTMLElement[];
+    const observer = new IntersectionObserver((entries) => {
+      const visibleStep = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visibleStep) return;
+      const index = Number((visibleStep.target as HTMLElement).dataset.learningStep);
+      if (!Number.isNaN(index)) setActiveStep((current) => current === index ? current : index);
+    }, { rootMargin: '-42% 0px -42% 0px', threshold: [0, .5, 1] });
+    steps.forEach((step) => observer.observe(step));
+    return () => observer.disconnect();
+  }, []);
+
+  return <div ref={sceneRef} className="learning-method">
+    <div className="learning-method__lead">
+      <SceneHeader scene={scene} />
+      <p className="learning-method__active" aria-label={`Idea actual: ${data.learningPrinciples[activeStep]}`}>{data.learningPrinciples[activeStep]}</p>
+      <span className="learning-method__counter" aria-hidden="true">{String(activeStep + 1).padStart(2, '0')} / {String(data.learningPrinciples.length).padStart(2, '0')}</span>
+    </div>
+    <ol className="learning-method__track" style={{ '--learning-progress': progress } as CSSProperties}>
+      {data.learningPrinciples.map((principle, index) => <li key={principle} data-learning-step={index} data-active={index === activeStep} aria-current={index === activeStep ? 'step' : undefined}><span>{String(index + 1).padStart(2, '0')}</span><p>{principle}</p></li>)}
+    </ol>
+  </div>;
+}
+
+function TechnologyScene({ scene, data }: { scene: PortfolioScene; data: PortfolioData }) {
+  const [activeStage, setActiveStage] = useState(0);
+  const sceneRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = sceneRef.current;
+    if (!root) return;
+    const stages = Array.from(root.querySelectorAll('[data-technology-stage]')) as HTMLElement[];
+    const observer = new IntersectionObserver((entries) => {
+      const visibleStage = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visibleStage) return;
+      const index = Number((visibleStage.target as HTMLElement).dataset.technologyStage);
+      if (!Number.isNaN(index)) setActiveStage((current) => current === index ? current : index);
+    }, { rootMargin: '-38% 0px -48% 0px', threshold: [0, .45, 1] });
+    stages.forEach((stage) => observer.observe(stage));
+    return () => observer.disconnect();
+  }, []);
+
+  return <div ref={sceneRef} className="technology-system">
+    <SceneHeader scene={scene} />
+    <div className="technology-system__layout">
+      <div className="technology-system__stages" aria-label="Tecnologías relacionadas con etapas de proyecto">
+        {data.technologyStages.map((stage, index) => {
+          const stageTechnologies = data.technologies.filter((technology) => technology.stages.includes(stage.id));
+          return <section key={stage.id} className="technology-stage" data-technology-stage={index} data-active={index === activeStage} aria-labelledby={`stage-${stage.id}`}><p id={`stage-${stage.id}`}>{stage.label}</p><ul>{stageTechnologies.map((technology) => <li key={technology.name}>{technology.name}</li>)}</ul></section>;
+        })}
+      </div>
+      <div className="technology-system__categories" aria-label="Tecnologías por práctica actual">
+        {data.technologyCategories.map((category) => <div key={category.id} className="technology-category"><span>{category.label}</span><p>{data.technologies.filter((technology) => technology.category === category.id).map((technology) => technology.name).join(' · ') || 'Pendiente de configurar'}</p></div>)}
+      </div>
     </div>
   </div>;
 }

@@ -371,31 +371,46 @@ body {
 
 .education-scene__institution {
   display: grid;
-  min-height: 8.5rem;
+  min-height: 6.75rem;
   margin: 0;
   padding: 1.25rem 0;
-  grid-template-columns: minmax(6.5rem, 1fr) minmax(7rem, 0.8fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
   align-items: center;
   border-bottom: 1px solid var(--color-charcoal);
 }
 
+.education-scene__institution[data-has-logo='true'] {
+  grid-template-columns: clamp(4rem, 5vw, 5rem) minmax(0, 1fr);
+}
+
 .education-scene__institution img {
   display: block;
-  max-width: 100%;
-  max-height: 6rem;
+  width: clamp(4rem, 5vw, 5rem);
+  height: clamp(4rem, 5vw, 5rem);
   object-fit: contain;
   object-position: left center;
 }
 
-.education-scene__institution--utesa img {
-  max-height: 7rem;
-}
-
 .education-scene__institution figcaption {
+  display: grid;
+  gap: 0.3rem;
   font-size: clamp(1rem, 1.5vw, 1.3rem);
   font-weight: 700;
   line-height: 1.1;
+}
+
+.education-scene__institution-name,
+.education-scene__institution-period,
+.education-scene__institution-description {
+  display: block;
+}
+
+.education-scene__institution-period,
+.education-scene__institution-description {
+  font-size: 0.78em;
+  font-weight: 500;
+  line-height: 1.35;
 }
 
 .education-scene__details {
@@ -620,13 +635,17 @@ body {
   .education-scene__institution {
     min-height: 4.25rem;
     padding: 0.65rem 0;
-    grid-template-columns: minmax(4rem, 5.5rem) 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
   }
 
-  .education-scene__institution img,
-  .education-scene__institution--utesa img {
-    max-height: 3.6rem;
+  .education-scene__institution[data-has-logo='true'] {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+  }
+
+  .education-scene__institution img {
+    width: 3.25rem;
+    height: 3.25rem;
   }
 
   .education-scene__institution figcaption {
@@ -680,7 +699,8 @@ body {
 
   .presentation-scene__portrait-art,
   [data-presentation-reveal],
-  [data-education-reveal] {
+  [data-education-reveal],
+  [data-education-logo] {
     opacity: 1 !important;
     visibility: visible !important;
     transform: none !important;

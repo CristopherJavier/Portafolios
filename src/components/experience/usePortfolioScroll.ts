@@ -46,6 +46,9 @@ export function usePortfolioScroll(refs: PortfolioScrollRefs) {
           const educationItems: HTMLElement[] = Array.from(
             education.querySelectorAll<HTMLElement>('[data-education-reveal]'),
           );
+          const educationLogos: HTMLElement[] = Array.from(
+            education.querySelectorAll<HTMLElement>('[data-education-logo]'),
+          );
 
           gsap.set(presentation, { autoAlpha: 0, yPercent: 3 });
           gsap.set(education, { xPercent: 100 });
@@ -53,6 +56,7 @@ export function usePortfolioScroll(refs: PortfolioScrollRefs) {
           if (cue) gsap.set(cue, { autoAlpha: 1 });
           gsap.set(presentationItems, revealState);
           gsap.set(educationItems, revealState);
+          gsap.set(educationLogos, { autoAlpha: 0, y: 12, scale: 0.96 });
 
           const timeline = gsap.timeline({
             defaults: { ease: 'none' },
@@ -80,6 +84,11 @@ export function usePortfolioScroll(refs: PortfolioScrollRefs) {
 
           timeline.to(education, { xPercent: 0, duration: 1 });
           timeline.to(educationItems, { ...revealTarget, stagger: 0.12 });
+          timeline.to(
+            educationLogos,
+            { autoAlpha: 1, y: 0, scale: 1, duration: 0.36, ease: 'none', stagger: 0.08 },
+            '<0.16',
+          );
           timeline.to(technologies, { yPercent: 0, duration: 1 });
 
           return undefined;

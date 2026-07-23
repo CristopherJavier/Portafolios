@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+import { curriculumDownload } from '../../../data/portfolioAssets';
 
 export const PresentationScene = forwardRef<HTMLElement>(function PresentationScene(_, ref) {
   return (
@@ -29,7 +30,7 @@ export const PresentationScene = forwardRef<HTMLElement>(function PresentationSc
         </p>
         <div className="presentation-scene__actions" data-presentation-reveal="actions">
           <a href="https://github.com/CristopherJavier" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="/assets/documents/cv-cristopher-javier.pdf" download>Descargar CV</a>
+          <a href={curriculumDownload.href} download={curriculumDownload.filename}>Descargar CV</a>
         </div>
       </div>
     </section>

@@ -329,11 +329,9 @@ body {
   min-height: 100%;
   margin: 0 auto;
   grid-template-columns: minmax(0, 1.15fr) minmax(15rem, 0.85fr);
-  grid-template-areas:
-    'primary institutions'
-    'details institutions';
+  grid-template-areas: 'primary institutions';
   gap: clamp(1.5rem, 4vw, 5rem);
-  align-content: center;
+  align-items: center;
 }
 
 .education-scene__primary {
@@ -351,29 +349,20 @@ body {
   text-align: left;
 }
 
-.education-scene__academy,
-.education-scene__details p {
-  margin: 0;
-}
-
-.education-scene__academy {
-  max-width: 34ch;
-  margin-top: clamp(1.25rem, 3vw, 2rem);
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
-  line-height: 1.4;
-}
-
 .education-scene__institutions {
   grid-area: institutions;
+  display: grid;
+  margin: 0;
+  padding: 0;
   align-self: center;
   border-top: 1px solid var(--color-charcoal);
+  list-style: none;
 }
 
 .education-scene__institution {
   display: grid;
-  min-height: 6.75rem;
-  margin: 0;
-  padding: 1.25rem 0;
+  min-height: 9.5rem;
+  padding: clamp(1rem, 2vw, 1.5rem) 0;
   grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
   align-items: center;
@@ -384,50 +373,62 @@ body {
   grid-template-columns: clamp(4rem, 5vw, 5rem) minmax(0, 1fr);
 }
 
-.education-scene__institution img {
-  display: block;
+.education-scene__logo {
+  display: grid;
   width: clamp(4rem, 5vw, 5rem);
   height: clamp(4rem, 5vw, 5rem);
-  object-fit: contain;
-  object-position: left center;
+  place-items: center;
+  padding: 0.25rem;
+  background: color-mix(in srgb, var(--color-warm-white) 72%, transparent);
 }
 
-.education-scene__institution figcaption {
+.education-scene__logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.education-scene__institution-content {
   display: grid;
-  gap: 0.3rem;
-  font-size: clamp(1rem, 1.5vw, 1.3rem);
-  font-weight: 700;
-  line-height: 1.1;
+  gap: 0.4rem;
+}
+
+.education-scene__institution-content p,
+.education-scene__institution-name {
+  margin: 0;
 }
 
 .education-scene__institution-name,
+.education-scene__institution-program,
 .education-scene__institution-period,
 .education-scene__institution-description {
   display: block;
 }
 
+.education-scene__institution-name {
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  font-weight: 750;
+  line-height: 1.1;
+}
+
+.education-scene__institution-program {
+  max-width: 33ch;
+  font-size: clamp(0.9rem, 1.3vw, 1.08rem);
+  font-weight: 650;
+  line-height: 1.3;
+}
+
 .education-scene__institution-period,
 .education-scene__institution-description {
-  font-size: 0.78em;
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
   font-weight: 500;
   line-height: 1.35;
 }
 
-.education-scene__details {
-  display: grid;
-  grid-area: details;
-  max-width: 44rem;
-  gap: 1rem;
-  padding-top: clamp(0.5rem, 2vw, 1.5rem);
-  border-top: 1px solid var(--color-charcoal);
-  font-size: clamp(0.95rem, 1.35vw, 1.2rem);
-  line-height: 1.45;
-}
-
-.education-scene__goal {
-  max-width: 31ch;
-  color: var(--color-warm-white);
-  font-weight: 700;
+.education-scene__institution-period {
+  color: color-mix(in srgb, var(--color-charcoal) 72%, var(--color-warm-white));
+  font-weight: 650;
 }
 
 .portfolio-scene--technologies {
@@ -617,9 +618,10 @@ body {
     grid-template-columns: 1fr;
     grid-template-areas:
       'primary'
-      'institutions'
-      'details';
+      'institutions';
     gap: clamp(1rem, 3vh, 1.6rem);
+    align-content: center;
+    align-items: start;
   }
 
   .education-scene__primary h2 {
@@ -627,14 +629,9 @@ body {
     font-size: clamp(2rem, 9vw, 3.4rem);
   }
 
-  .education-scene__academy {
-    margin-top: 0.85rem;
-    font-size: clamp(0.9rem, 4vw, 1rem);
-  }
-
   .education-scene__institution {
-    min-height: 4.25rem;
-    padding: 0.65rem 0;
+    min-height: 0;
+    padding: 0.9rem 0;
     grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
   }
@@ -643,20 +640,26 @@ body {
     grid-template-columns: 3.25rem minmax(0, 1fr);
   }
 
-  .education-scene__institution img {
+  .education-scene__logo {
     width: 3.25rem;
     height: 3.25rem;
   }
 
-  .education-scene__institution figcaption {
-    font-size: 0.95rem;
+  .education-scene__institution-content {
+    gap: 0.3rem;
   }
 
-  .education-scene__details {
-    gap: 0.65rem;
-    padding-top: 0.85rem;
-    font-size: clamp(0.82rem, 3.6vw, 0.95rem);
-    line-height: 1.35;
+  .education-scene__institution-name {
+    font-size: 1.05rem;
+  }
+
+  .education-scene__institution-program {
+    font-size: 0.9rem;
+  }
+
+  .education-scene__institution-period,
+  .education-scene__institution-description {
+    font-size: clamp(0.84rem, 3.5vw, 0.92rem);
   }
 
   .technologies-scene__content h2,
@@ -699,7 +702,9 @@ body {
 
   .presentation-scene__portrait-art,
   [data-presentation-reveal],
-  [data-education-reveal],
+  [data-education-heading],
+  [data-education-name],
+  [data-education-detail],
   [data-education-logo] {
     opacity: 1 !important;
     visibility: visible !important;

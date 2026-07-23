@@ -43,8 +43,12 @@ export function usePortfolioScroll(refs: PortfolioScrollRefs) {
           const presentationItems: HTMLElement[] = Array.from(
             presentation.querySelectorAll<HTMLElement>('[data-presentation-reveal]'),
           );
-          const educationItems: HTMLElement[] = Array.from(
-            education.querySelectorAll<HTMLElement>('[data-education-reveal]'),
+          const educationHeading = education.querySelector<HTMLElement>('[data-education-heading]');
+          const educationNames: HTMLElement[] = Array.from(
+            education.querySelectorAll<HTMLElement>('[data-education-name]'),
+          );
+          const educationDetails: HTMLElement[] = Array.from(
+            education.querySelectorAll<HTMLElement>('[data-education-detail]'),
           );
           const educationLogos: HTMLElement[] = Array.from(
             education.querySelectorAll<HTMLElement>('[data-education-logo]'),
@@ -55,7 +59,9 @@ export function usePortfolioScroll(refs: PortfolioScrollRefs) {
           gsap.set(technologies, { yPercent: 100 });
           if (cue) gsap.set(cue, { autoAlpha: 1 });
           gsap.set(presentationItems, revealState);
-          gsap.set(educationItems, revealState);
+          if (educationHeading) gsap.set(educationHeading, revealState);
+          gsap.set(educationNames, revealState);
+          gsap.set(educationDetails, { autoAlpha: 0, y: 16 });
           gsap.set(educationLogos, { autoAlpha: 0, y: 12, scale: 0.96 });
 
           const timeline = gsap.timeline({
@@ -83,12 +89,23 @@ export function usePortfolioScroll(refs: PortfolioScrollRefs) {
           timeline.to(presentationDetails, { ...revealTarget, stagger: 0.3 });
 
           timeline.to(education, { xPercent: 0, duration: 1 });
-          timeline.to(educationItems, { ...revealTarget, stagger: 0.12 });
-          timeline.to(
-            educationLogos,
-            { autoAlpha: 1, y: 0, scale: 1, duration: 0.36, ease: 'none', stagger: 0.08 },
-            '<0.16',
-          );
+          if (educationHeading) timeline.to(educationHeading, revealTarget);
+
+          educationNames.forEach((name, index) => {
+            const logo = educationLogos[index];
+            const details = educationDetails.slice(index * 3, index * 3 + 3);
+
+            timeline.to(name, revealTarget);
+            if (logo) {
+              timeline.to(
+                logo,
+                { autoAlpha: 1, y: 0, scale: 1, duration: 0.36, ease: 'none' },
+                '<0.1',
+              );
+            }
+            timeline.to(details, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'none', stagger: 0.08 }, '<0.1');
+          });
+
           timeline.to(technologies, { yPercent: 0, duration: 1 });
 
           return undefined;

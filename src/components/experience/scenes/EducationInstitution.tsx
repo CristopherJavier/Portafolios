@@ -11,27 +11,35 @@ export function EducationInstitution({ institution }: EducationInstitutionProps)
   const canShowLogo = Boolean(institution.logo && institution.logoAlt && !hasLogoError);
 
   return (
-    <figure
+    <li
       className="education-scene__institution"
       data-education-institution={institution.id}
       data-has-logo={canShowLogo}
     >
       {canShowLogo && (
-        <img
-          src={institution.logo}
-          alt={institution.logoAlt}
-          decoding="async"
-          data-education-logo
-          onError={() => setHasLogoError(true)}
-        />
+        <div className="education-scene__logo" data-education-logo>
+          <img
+            src={institution.logo}
+            alt={institution.logoAlt}
+            decoding="async"
+            onError={() => setHasLogoError(true)}
+          />
+        </div>
       )}
-      <figcaption>
-        <span className="education-scene__institution-name">{institution.name}</span>
-        {institution.period && <span className="education-scene__institution-period">{institution.period}</span>}
-        {institution.description && (
-          <span className="education-scene__institution-description">{institution.description}</span>
-        )}
-      </figcaption>
-    </figure>
+      <div className="education-scene__institution-content">
+        <h3 className="education-scene__institution-name" data-education-name>
+          {institution.name}
+        </h3>
+        <p className="education-scene__institution-program" data-education-detail>
+          {institution.program}
+        </p>
+        <p className="education-scene__institution-period" data-education-detail>
+          {institution.period}
+        </p>
+        <p className="education-scene__institution-description" data-education-detail>
+          {institution.description}
+        </p>
+      </div>
+    </li>
   );
 }

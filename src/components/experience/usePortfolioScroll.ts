@@ -16,6 +16,15 @@ type PortfolioScrollRefs = {
 
 const revealState = { autoAlpha: 0, y: 24 };
 const revealTarget = { autoAlpha: 1, y: 0, duration: 0.48, ease: 'none' };
+const stageScrollDistance = { desktop: 18, compact: 16 } as const;
+
+function replayTechnologyShimmer(shimmers: HTMLElement[]) {
+  shimmers.forEach((shimmer) => {
+    shimmer.classList.remove('is-shimmering');
+    void shimmer.offsetWidth;
+    shimmer.classList.add('is-shimmering');
+  });
+}
 
 export function usePortfolioScroll(refs: PortfolioScrollRefs) {
   useGSAP(
@@ -53,6 +62,10 @@ export function usePortfolioScroll(refs: PortfolioScrollRefs) {
           const educationLogos: HTMLElement[] = Array.from(
             education.querySelectorAll<HTMLElement>('[data-education-logo]'),
           );
+          const technologiesHeading = technologies.querySelector<HTMLElement>('[data-technologies-heading]');
+          const technologyGroups: HTMLElement[] = Array.from(
+            technologies.querySelectorAll<HTMLElement>('[data-technology-group]'),
+          );
 
           gsap.set(presentation, { autoAlpha: 0, yPercent: 3 });
           gsap.set(education, { xPercent: 100 });
@@ -63,13 +76,21 @@ export function usePortfolioScroll(refs: PortfolioScrollRefs) {
           gsap.set(educationNames, revealState);
           gsap.set(educationDetails, { autoAlpha: 0, y: 16 });
           gsap.set(educationLogos, { autoAlpha: 0, y: 12, scale: 0.96 });
+          if (technologiesHeading) gsap.set(technologiesHeading, revealState);
+          gsap.set(technologyGroups, { autoAlpha: 0, y: 12 });
+          technologyGroups.forEach((group) => {
+            const items: HTMLElement[] = Array.from(group.querySelectorAll<HTMLElement>('[data-technology-item]'));
+            const icons: HTMLElement[] = Array.from(group.querySelectorAll<HTMLElement>('[data-technology-icon]'));
+            gsap.set(items, { autoAlpha: 0, y: 16 });
+            gsap.set(icons, { scale: 0.94 });
+          });
 
           const timeline = gsap.timeline({
             defaults: { ease: 'none' },
             scrollTrigger: {
               trigger: stage,
               start: 'top top',
-              end: () => `+=${window.innerHeight * (isCompact ? 7 : 8)}`,
+              end: () => `+=${window.innerHeight * (isCompact ? stageScrollDistance.compact : stageScrollDistance.desktop)}`,
               pin: true,
               pinSpacing: true,
               scrub: true,
@@ -107,6 +128,24 @@ export function usePortfolioScroll(refs: PortfolioScrollRefs) {
           });
 
           timeline.to(technologies, { yPercent: 0, duration: 1 });
+          if (technologiesHeading) timeline.to(technologiesHeading, revealTarget);
+
+          technologyGroups.forEach((group, index) => {
+            const items: HTMLElement[] = Array.from(group.querySelectorAll<HTMLElement>('[data-technology-item]'));
+            const icons: HTMLElement[] = Array.from(group.querySelectorAll<HTMLElement>('[data-technology-icon]'));
+            const shimmers: HTMLElement[] = Array.from(
+              group.querySelectorAll<HTMLElement>('[data-technology-shimmer]'),
+            );
+            const isLastGroup = index === technologyGroups.length - 1;
+            const readingDuration = Math.max(0.28, items.length * 0.06);
+
+            timeline.to(group, { autoAlpha: 1, y: 0, duration: 0.28 });
+            timeline.to(items, { autoAlpha: 1, y: 0, duration: 0.32, ease: 'none', stagger: 0.055 }, '<0.05');
+            timeline.to(icons, { scale: 1, duration: 0.32, ease: 'none', stagger: 0.055 }, '<');
+            if (shimmers.length) timeline.call(() => replayTechnologyShimmer(shimmers), undefined, '<0.08');
+            timeline.to(group, { opacity: 1, duration: readingDuration });
+            if (!isLastGroup) timeline.to(group, { autoAlpha: 0, y: -12, duration: 0.24 });
+          });
 
           return undefined;
         },

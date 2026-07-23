@@ -433,15 +433,17 @@ body {
 
 .portfolio-scene--technologies {
   z-index: 6;
-  display: grid;
-  place-items: center;
   padding: clamp(1.5rem, 5vw, 5rem);
   background: var(--color-warm-white);
   color: var(--color-charcoal);
 }
 
 .technologies-scene__content {
+  display: grid;
   width: min(100%, 80rem);
+  min-height: 100%;
+  margin: 0 auto;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 .technologies-scene__content h2,
@@ -456,34 +458,187 @@ body {
   text-wrap: balance;
 }
 
-.technologies-scene__canvas {
+.technologies-scene__groups {
   position: relative;
-  min-height: clamp(12rem, 32vh, 22rem);
-  margin-top: clamp(2rem, 6vw, 5rem);
-  border-block: 1px solid var(--color-charcoal);
+  min-height: 0;
+  margin-top: clamp(1.5rem, 3vw, 3.5rem);
 }
 
-.technologies-scene__canvas::before,
-.technologies-scene__canvas::after {
-  content: '';
+.technologies-scene__group {
   position: absolute;
-  border-radius: 50%;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  gap: clamp(1rem, 2.2vh, 1.75rem);
 }
 
-.technologies-scene__canvas::before {
-  top: 16%;
-  right: 14%;
-  width: clamp(4rem, 9vw, 8rem);
-  aspect-ratio: 1;
-  background: var(--color-peach);
+.technologies-scene__group-heading {
+  display: grid;
+  max-width: 52rem;
+  gap: 0.75rem;
 }
 
-.technologies-scene__canvas::after {
-  bottom: 10%;
-  left: 20%;
-  width: clamp(3rem, 7vw, 6rem);
-  aspect-ratio: 1;
-  border: 1px solid var(--color-charcoal);
+.technologies-scene__group-heading h3,
+.technologies-scene__group-heading p {
+  margin: 0;
+}
+
+.technologies-scene__group-heading h3 {
+  max-width: 18ch;
+  font-size: clamp(1.8rem, 3.5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+}
+
+.technologies-scene__group-heading p {
+  max-width: 70ch;
+  font-size: clamp(0.9rem, 1.35vw, 1.1rem);
+  line-height: 1.45;
+}
+
+.technologies-scene__grid {
+  display: grid;
+  width: min(100%, 74rem);
+  margin: 0;
+  padding: 0;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(0.55rem, 1.15vw, 1rem);
+  list-style: none;
+}
+
+.technology-card {
+  display: grid;
+  min-width: 0;
+  min-height: 5rem;
+  padding: 0.7rem;
+  grid-template-columns: 2.45rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--color-charcoal) 20%, transparent);
+  background: color-mix(in srgb, var(--color-peach) 24%, transparent);
+}
+
+.technology-card__icon {
+  position: relative;
+  display: grid;
+  width: 2.45rem;
+  height: 2.45rem;
+  place-items: center;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-charcoal) 8%, transparent);
+  color: var(--color-warm-brown);
+}
+
+.technology-card__icon svg {
+  position: relative;
+  z-index: 1;
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.technology-card__shimmer {
+  position: absolute;
+  inset: -15% auto -15% 0;
+  width: 48%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-warm-white) 20%, transparent) 35%,
+    color-mix(in srgb, var(--color-warm-white) 70%, transparent) 50%,
+    color-mix(in srgb, var(--color-warm-white) 20%, transparent) 65%,
+    transparent 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-150%) skewX(-14deg);
+}
+
+.technology-card__shimmer.is-shimmering {
+  animation: technology-icon-shimmer 0.52s ease-out both;
+}
+
+.technology-card__text {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.technology-card__name,
+.technology-card__status {
+  display: block;
+}
+
+.technology-card__name {
+  overflow-wrap: anywhere;
+  font-size: clamp(0.78rem, 1vw, 0.92rem);
+  font-weight: 750;
+  line-height: 1.1;
+}
+
+.technology-card__status {
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.18rem 0.32rem;
+  border: 1px solid color-mix(in srgb, var(--color-charcoal) 24%, transparent);
+  font-size: clamp(0.58rem, 0.68vw, 0.66rem);
+  font-weight: 650;
+  line-height: 1.15;
+}
+
+.technology-card[data-technology-status='Fundamentos'] .technology-card__status {
+  opacity: 0.78;
+}
+
+.technology-card[data-technology-status='En aprendizaje'] .technology-card__status {
+  border-color: color-mix(in srgb, var(--color-warm-brown) 62%, var(--color-charcoal));
+  background: color-mix(in srgb, var(--color-warm-white) 40%, transparent);
+}
+
+@media (hover: hover) {
+  .technology-card:hover .technology-card__icon {
+    color: var(--color-charcoal);
+  }
+
+  .technology-card:hover .technology-card__shimmer {
+    animation: technology-icon-shimmer-hover 0.56s ease-out both;
+  }
+}
+
+@keyframes technology-icon-shimmer {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(-150%) skewX(-14deg);
+  }
+
+  14%,
+  78% {
+    opacity: 0.62;
+  }
+
+  82% {
+    opacity: 0;
+    transform: translateX(340%) skewX(-14deg);
+  }
+}
+
+@keyframes technology-icon-shimmer-hover {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(-150%) skewX(-14deg);
+  }
+
+  14%,
+  78% {
+    opacity: 0.62;
+  }
+
+  82% {
+    opacity: 0;
+    transform: translateX(340%) skewX(-14deg);
+  }
 }
 
 .portfolio-section {
@@ -547,6 +702,10 @@ body {
 }
 
 @media (max-width: 64rem) {
+  .technologies-scene__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .projects-scene__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -662,6 +821,63 @@ body {
     font-size: clamp(0.84rem, 3.5vw, 0.92rem);
   }
 
+  .portfolio-scene--technologies {
+    padding: clamp(1.25rem, 6vw, 2rem);
+  }
+
+  .technologies-scene__groups {
+    margin-top: clamp(1rem, 2.5vh, 1.5rem);
+  }
+
+  .technologies-scene__group {
+    gap: clamp(0.8rem, 1.8vh, 1.1rem);
+  }
+
+  .technologies-scene__group-heading {
+    gap: 0.45rem;
+  }
+
+  .technologies-scene__group-heading h3 {
+    max-width: 20ch;
+    font-size: clamp(1.45rem, 7vw, 2.25rem);
+  }
+
+  .technologies-scene__group-heading p {
+    font-size: clamp(0.78rem, 3.45vw, 0.92rem);
+    line-height: 1.35;
+  }
+
+  .technologies-scene__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .technology-card {
+    min-height: 4.65rem;
+    padding: 0.55rem;
+    grid-template-columns: 2.15rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .technology-card__icon {
+    width: 2.15rem;
+    height: 2.15rem;
+  }
+
+  .technology-card__icon svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .technology-card__name {
+    font-size: clamp(0.74rem, 3.2vw, 0.88rem);
+  }
+
+  .technology-card__status {
+    padding: 0.15rem 0.25rem;
+    font-size: clamp(0.55rem, 2.25vw, 0.62rem);
+  }
+
   .technologies-scene__content h2,
   .projects-scene__content h2,
   .contact-scene__content h2 {
@@ -705,10 +921,36 @@ body {
   [data-education-heading],
   [data-education-name],
   [data-education-detail],
-  [data-education-logo] {
+  [data-education-logo],
+  [data-technologies-heading],
+  [data-technology-group],
+  [data-technology-item],
+  [data-technology-icon] {
     opacity: 1 !important;
     visibility: visible !important;
     transform: none !important;
+  }
+
+  .technologies-scene__content {
+    display: block;
+    min-height: 0;
+  }
+
+  .technologies-scene__groups {
+    position: static;
+    min-height: 0;
+  }
+
+  .technologies-scene__group {
+    position: relative !important;
+    inset: auto;
+    margin-top: clamp(2rem, 7vw, 3rem);
+  }
+
+  .technology-card__shimmer,
+  .technology-card__shimmer.is-shimmering {
+    display: none;
+    animation: none;
   }
 
   .presentation-scene__actions a,

@@ -1,75 +1,46 @@
-import { useLayoutEffect, useRef } from 'react';
-import { LayeredScene } from './LayeredScene';
-
-const scenes = [
-  { title: 'Escena 1 — Presentación', direction: 'initial', holdAfter: 0 },
-  { title: 'Escena 2 — Formación', direction: 'up', holdAfter: 0 },
-  { title: 'Escena 3 — Tecnologías', direction: 'up', holdAfter: 0 },
-  { title: 'Escena 4 — Proyectos', direction: 'right', holdAfter: 0 },
-  { title: 'Escena 5 — Contacto', direction: 'up', holdAfter: 0 },
-] as const;
-
-const clamp = (value: number, minimum: number, maximum: number) => Math.min(Math.max(value, minimum), maximum);
+import { useRef } from 'react';
+import { ContactScene } from './scenes/ContactScene';
+import { EducationScene } from './scenes/EducationScene';
+import { IntroScene } from './scenes/IntroScene';
+import { PresentationScene } from './scenes/PresentationScene';
+import { ProjectsScene } from './scenes/ProjectsScene';
+import { TechnologiesScene } from './scenes/TechnologiesScene';
+import { usePortfolioScroll } from './usePortfolioScroll';
 
 export function PortfolioExperience() {
-  const experienceRef = useRef<HTMLElement>(null);
-  const sceneRefs = useRef<Array<HTMLElement | null>>([]);
+  const rootRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const introRef = useRef<HTMLElement>(null);
+  const presentationRef = useRef<HTMLElement>(null);
+  const educationRef = useRef<HTMLElement>(null);
+  const technologiesRef = useRef<HTMLElement>(null);
 
-  useLayoutEffect(() => {
-    const experience = experienceRef.current;
-    const layerElements = sceneRefs.current;
-    if (!experience || layerElements.some((scene) => !scene)) return;
+  usePortfolioScroll({
+    root: rootRef,
+    stage: stageRef,
+    intro: introRef,
+    presentation: presentationRef,
+    education: educationRef,
+    technologies: technologiesRef,
+  });
 
-    const [firstScene, secondScene, thirdScene, fourthScene, fifthScene] = layerElements as HTMLElement[];
-    let frameId: number | null = null;
-
-    const updateScenes = () => {
-      frameId = null;
-
-      const containerTop = experience.getBoundingClientRect().top + window.scrollY;
-      const containerHeight = experience.offsetHeight;
-      const scrollRange = Math.max(containerHeight - window.innerHeight, 1);
-      const globalProgress = clamp((window.scrollY - containerTop) / scrollRange, 0, 1) * 4;
-      const progressFor = (transitionStart: number) => clamp(globalProgress - transitionStart, 0, 1);
-      const verticalOffset = (progress: number) => `${(1 - progress) * 100}%`;
-      const horizontalOffset = (progress: number) => `${(1 - progress) * 100}%`;
-
-      firstScene.style.transform = 'translate3d(0, 0, 0)';
-      secondScene.style.transform = `translate3d(0, ${verticalOffset(progressFor(0))}, 0)`;
-      thirdScene.style.transform = `translate3d(0, ${verticalOffset(progressFor(1))}, 0)`;
-      fourthScene.style.transform = `translate3d(${horizontalOffset(progressFor(2))}, 0, 0)`;
-      fifthScene.style.transform = `translate3d(0, ${verticalOffset(progressFor(3))}, 0)`;
-    };
-
-    const requestUpdate = () => {
-      if (frameId !== null) return;
-      frameId = window.requestAnimationFrame(updateScenes);
-    };
-
-    window.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', requestUpdate);
-    updateScenes();
-
-    return () => {
-      window.removeEventListener('scroll', requestUpdate);
-      window.removeEventListener('resize', requestUpdate);
-      if (frameId !== null) window.cancelAnimationFrame(frameId);
-    };
-  }, []);
+  const returnToStart = () => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+  };
 
   return (
-    <main ref={experienceRef} className="layered-scroll">
-      <div className="layered-scroll__stage">
-        {scenes.map((scene, index) => (
-          <LayeredScene
-            key={scene.title}
-            ref={(element) => { sceneRefs.current[index] = element; }}
-            index={index}
-            title={scene.title}
-            direction={scene.direction}
-          />
-        ))}
+    <main ref={rootRef} className="portfolio-experience">
+      <div className="portfolio-experience__journey">
+        <div ref={stageRef} className="portfolio-experience__stage">
+          <IntroScene ref={introRef} />
+          <PresentationScene ref={presentationRef} />
+          <EducationScene ref={educationRef} />
+          <TechnologiesScene ref={technologiesRef} />
+        </div>
       </div>
+      <ProjectsScene />
+      <ContactScene onReturnToStart={returnToStart} />
     </main>
   );
 }
